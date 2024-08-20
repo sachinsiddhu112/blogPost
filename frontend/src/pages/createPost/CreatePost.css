@@ -1,0 +1,64 @@
+
+.create-post-section{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.inputs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 500px;
+    height: fit-content;
+    margin-bottom: 20px;
+    padding: 10px 10px;
+    box-shadow: 2px 2px 2px #adb5bd ;
+    border-radius: 10px;
+    background-color: #e5e5e5;
+}
+.inputs label{
+    margin-left: 10px;
+}
+.inputItem{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width:100%;
+    max-width: 400px;
+   
+}
+.topic-input{
+   height: 35px;
+   border-radius: 10px;
+   font-size: 15px;
+   outline: none;
+   padding: 5px 5px;
+   
+}
+.description-input{
+    height: 100px;
+    border-radius: 10px;
+   font-size: 15px;
+   outline: none;
+   padding: 5px 5px;
+   
+}
+.upload-btn{
+    width: 300px;
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: 2px solid rgb(213, 143, 13);
+    cursor: pointer;
+}
+.upload-btn:hover{
+    background-color: rgb(213, 143, 13);
+    border: 2px solid orange;
+}
+

@@ -1,0 +1,69 @@
+.signup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 500px;
+
+}
+.s-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    border: 2px solid black;
+    background-color: #495057;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 700px;
+    height: 500px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   width: 100%;
+    gap: 20px;
+   
+
+}
+
+.inputItem{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+   
+    gap: 4px;
+}
+.s-input{
+width: 100%;
+max-width: 300px;
+height: 20px;
+padding: 7px 3px;
+font-size: 15px;
+border-radius: 10px;
+
+}
+
+.s-btn{
+    height: 30px;
+    width: 200px;
+    border: 2px solid #ff7d00;
+    border-radius: 10px;
+    cursor: pointer; 
+    margin: auto;
+    color: black;
+}
+.s-btn:hover{
+    background-color: #ff7d00;
+    border: 2px solid white;
+}
+.link-to-login{
+    color: rgb(0, 119, 255);
+}
