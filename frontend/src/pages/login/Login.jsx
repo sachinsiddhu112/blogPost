@@ -16,12 +16,14 @@ export default function Login() {
     
         //checking provided input wheather ther are empty or not
         if(!username ||  !password ){
+            alert("Provide all credentials.")
             return;
         }
         
         
-        try{const response = await axios.post("http://localhost:3001/auth/login",{username,password})
-        console.log(response);
+        try{
+            const response = await axios.post("http://localhost:3001/auth/login",{username,password})
+        
         setUser(response.data.user.username);//setting the user in auth context
         sessionStorage.setItem("user",JSON.stringify(response.data.user.username));//setting user in localStorage
         setAuthToken(response.data.authToken);//setting authToken in authContext
@@ -30,14 +32,13 @@ export default function Login() {
         navigate("/");}
         catch(error){
             console.log("Error in login in",error);
-            setError(error);
+            alert(error.response.data.error)
         }
     }
     return (
         <div className='login'>
             <div className="l-container">
                 <h1 className=''>Login</h1>
-
                 <form onSubmit={handleSubmit} className='input-form'>
                     <div className='formItem'>
                         <label className='username-label'>

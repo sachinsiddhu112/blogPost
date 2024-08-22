@@ -29,12 +29,14 @@
 }
 .all-posts-post{
     width: 100%;
-   
+    max-width: 700px;
+    height: 620px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    
     padding: 10px 10px;
+    border: 2px solid #343a40;
     border-radius: 10px;
      position: relative;
      top: -200px;
@@ -43,12 +45,12 @@
 .all-posts-post-details{
     display: flex;
     flex-direction: column;
-    width: 100%;
-    max-width: 700px;
-    border: 2px solid #343a40;
+    
+    margin: auto;
+   
     padding: 10px 10px;
     border-radius: 10px;
-    height: 570px;
+    
     gap: 10px;
 }
 .user-details{
@@ -89,50 +91,56 @@
    color: white;
 }
 
-.background{
-    display: none;
-    width: 100%;
-    max-width: 700px;
-    height: 570px;
-    z-index: -1;
-    position: absolute;
-    
-    
-    top: -10px;
-    
-    
-    
-}
-.shift-left{
-    left: 180px;
-    
-}
-.shift-right{
-    right: 180px;
 
+.p-like-comment{
+    display: flex;
+    gap: 15px;
+    color: white;
+   
+}
+.p-like{
+    display: flex;
+    gap: 5px;
+    border: 1px solid rgb(0, 170, 255);
+    border-radius: 10px;
+    padding: 0px 8px;
+    justify-content: center;
+    align-items: center;
+    
+    cursor: pointer;
+}
+.p-comment{
+    display: flex;
+    gap: 5px;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 2px 8px;
+    justify-content: center;
+    align-content: center;
+    cursor: pointer;
 }
 
 @media screen and (max-width:870px) {
-.all-posts-post-details{
+.all-posts-post{
 max-width: 600px;
     }
 
 }
 
 @media screen and (max-width:700px) {
-   .all-posts-post-details{
+   .all-posts-post{
     max-width: 500px;
    }
     
 }
 @media  screen and (max-width:560px) {
     .all-posts-post-file{
-        max-width: 300px;
-        height: 300px;
+        max-width: 350px;
+        height: 350px;
         margin: auto;
     }
-    .all-posts-post-details{
-        height: 350px;
+    .all-posts-post{
+        height: 510px;
         max-width: 350px;
         padding: 10px 10px;
     }

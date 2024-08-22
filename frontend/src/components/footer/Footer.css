@@ -1,0 +1,7 @@
+.f-container{
+    color: wheat;
+}
+.social-media{
+    display: flex;
+    gap: 10px;
+}

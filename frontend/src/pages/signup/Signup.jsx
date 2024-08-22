@@ -23,16 +23,17 @@ export default function SignUp() {
         e.preventDefault();
         //checking provided inputs are empty or not
         if(!inputs.username || !inputs.email || !inputs.password || !inputs.confirmPassword){
-
+            alert("Provide all credentials.")
             return;
         }
         //validating the email
         if(!emailRegex.test(inputs.email)){
-            
+            alert("Not valid email")
             return;
         }
-      try{const response = await axios.post("http://localhost:3001/auth/signup",inputs);
-        console.log(response);
+      try{
+        const response = await axios.post("http://localhost:3001/auth/signup",inputs);
+      
         setUser(response.data.response.username);//setting the user in context
         sessionStorage.setItem('user',JSON.stringify((response.data.response.username)));//setting the user in localstorage.
         setAuthToken(response.data.authToken);//settting the authToken in context
@@ -40,7 +41,7 @@ export default function SignUp() {
         navigate("/");}
         catch(error){
             console.log("error in signup",error);
-            setError(error);
+            alert(error.response.data.error)
         }
     }
     return (

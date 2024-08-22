@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./CreatePost.css"
 export default function CreatePost() {
@@ -6,7 +7,7 @@ export default function CreatePost() {
     const [file, setFile] = useState(null);
     const [postDescription, setPostDescription] = useState("");
     const [postTopic, setPostTopic] = useState("");
-
+    const navigate = useNavigate();
 
     const handlefile = (e) => {
         setFile(e.target.files[0]);
@@ -14,15 +15,14 @@ export default function CreatePost() {
 
     const handleUpload = async () => {
 
-        console.log("posting")
-        console.log(postDescription, "   ", postTopic)
+    
         if (!file || !postTopic || !postDescription) return;
 
         const formData = new FormData();
         formData.append('file', file);
         formData.append('description', postDescription);
         formData.append("topic", postTopic);
-        console.log(formData)
+       
         try {
             const response = await axios.post('http://localhost:3001/post/upload', formData, {
                 headers: {
@@ -30,12 +30,14 @@ export default function CreatePost() {
                     'authToken':JSON.parse(sessionStorage.getItem("authToken"))
                 },
             });
-            const fileId = response.data;
+           
             alert('file uploaded successfully');
+            navigate("/");
             
         }
         catch (err) {
             console.log(err);
+            alert(err.response.data.error);
         }
     }
 

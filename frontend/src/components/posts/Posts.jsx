@@ -2,15 +2,19 @@ import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import { FaRegCommentDots } from "react-icons/fa";
+import { BiLike } from "react-icons/bi";
 
 import "./Posts.css"
 import { authContext } from '../../context/authContext';
 export default function Posts() {
 
     const navigate = useNavigate();
-    const {user} = useContext(authContext)
+    const { user } = useContext(authContext)
     const [data, setData] = useState([]);
-    const [randomColors,setRandomColors] = useState([]);
+   
+   
+    
 
     useEffect(() => {
 
@@ -23,17 +27,15 @@ export default function Posts() {
                 console.error('Error fetching files:', error);
             }
         };
-        const fetchColors = async () => {
-            const colors = await axios.get(`https://x-colors.yurace.pro/api/random?number=${data.length!=0 ? data.length : 100}&type=light`);
-            console.log(colors);
-            setRandomColors(colors.data);
-        }
+        
 
         fetchAllfiles();
-        fetchColors();
+       
     }, [])
 
+   
 
+   
 
     //checking the file type in a particular post to show it on web page.
     const renderFile = (file) => {
@@ -55,28 +57,42 @@ export default function Posts() {
         }
 
     }
-
+    console.log(data)
     return (
         <div className='post-container'>
+            
             <div className='all-posts'>
 
-                {data.map((post,ind) => (
+                {data.map((post, ind) => (
                     <div key={post._id} className='all-posts-post'>
 
 
                         <div className='all-posts-post-details' onClick={() => navigate(`/post/${post._id}`)}>
                             <div className='user-details'>
-                                <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${user + user}`} alt='owner' />
+                                <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${post.user + post.user}`} alt='owner' />
                                 <span className='user-name'>{post.user}</span>
 
                             </div>
                             <span className='tag'>{post.topic}</span>
 
                             {renderFile(post)}
+                            
                         </div>
-                        <div className={`background ${ind %2 ==0 ? "shift-left":"shift-right"}`} style={{backgroundColor:randomColors[ind % randomColors.length].rgb  }}>
-
-                        </div>
+                        <div className='p-like-comment'>
+                                <div className='p-like'>
+                                    <span >{<BiLike size={27} onClick={() => {
+                                       alert("Please visit the blog for like.")
+                                    }}/>}</span>
+                                    <span>{post.likes}</span>
+                                </div>
+                                <div className="p-comment">
+                                    <span >{<FaRegCommentDots size={25} 
+                                    onClick={() => {
+                                       alert("Please visit the blog for commenting.")
+                                    }} />}</span>
+                                    <span>{post.comments.length}</span>
+                                </div>
+                            </div>
                     </div>
                 ))}
 

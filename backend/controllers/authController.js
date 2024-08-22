@@ -9,13 +9,14 @@ export const Signup = async (req, res) => {
     const { username, email, password, confirmPassword } = req.body;
     
     try {
+        console.log(req.body)
         if (!username || !email || !password || !confirmPassword) {
-            res.json({error:"Provide Your Credintials"});
+            res.status(401).json({error:"Provide Your Credintials"});
             return;
         }
 
         if (password != confirmPassword) {
-            res.json({error:"Password and Confirm Password are not matching"});
+            res.status(401).json({error:"Password and Confirm Password are not matching"});
             return;
         }
 
@@ -25,7 +26,7 @@ export const Signup = async (req, res) => {
         ]});
 
         if (user) {
-            res.json({error:"Username or Email already exist"});
+            res.status(401).json({error:"Username or Email already exist"});
             return;
         }
 
@@ -61,13 +62,13 @@ const {username,password} = req.body;
 
 try{
     if(!username || !password){
-        res.json({error:"Provide username and password to login"});
+        res.status(401).json({error:"Provide username and password to login"});
         return;
     }
     const user = await User.findOne({username:username});
 
     if(!user){
-        res.json({error:"User doesn't exist,Sign up first"});
+        res.status(401).json({error:"User doesn't exist,Sign up first"});
         return;
     }
     const data = {

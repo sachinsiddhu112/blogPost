@@ -24,7 +24,7 @@ export default function Header() {
                         {!user ?
                          <div className='not-user'>
                             <button className='btn-login' onClick={() => navigate("/login")}>Login</button>
-                            <button className='btn-sign' onClick={() => navigate("/signup")}>Sign Up</button>
+                           {window.screen.width >=800 && <button className='btn-sign' onClick={() => navigate("/signup")}>Sign Up</button>}
                         </div>
                             :
                             <div className='user'>

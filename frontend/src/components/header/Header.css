@@ -1,4 +1,4 @@
-.h-container{
+.h-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -7,54 +7,64 @@
     max-width: 2400px;
     background-color: #6c757d;
     z-index: 0;
-    
+
 }
-.header{
+
+.header {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
     margin-top: 10px;
 }
-.h-top{
+
+.h-top {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
-.h-top-left{
+
+.h-top-left {
     display: flex;
     gap: 10px;
     width: fit-content;
     padding: 8px 8px;
-    
+
     border-radius: 15px;
 }
-.logo{
+
+.logo {
     width: 60px;
     height: 60px;
     border-radius: 50%;
 }
-.title{
+
+.title {
     margin-top: 15px;
     font-family: "Rubik Moonrocks", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 25px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 25px;
 }
-.h-top-right{
+
+.h-top-right {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: fit-content;
     padding: 7px 7px;
-   
+
     gap: 20px;
     margin-top: 10px;
 }
 
+.not-user {
+    display: flex;
+    gap: 10px;
+}
 
-
-.btn-sign,.btn-login{
+.btn-sign,
+.btn-login {
     width: 120px;
     height: 40px;
     font-size: 20px;
@@ -64,28 +74,31 @@
     background-color: #ced4da;
 }
 
-.user{
+.user {
     display: flex;
     gap: 2px;
     width: fit-content;
     height: fit-content;
-    
-    
+
+
 }
-.circle{
+
+.circle {
     width: 60px;
     height: 60px;
-    border-radius: 50%;;
+    border-radius: 50%;
+    ;
     background-color: aqua;
     z-index: 2;
 }
-.user-username{
-    width: 100px;
-    
+
+.user-username {
+    width: fit-content;
     display: flex;
     justify-content: flex-end;
     height: 20px;
     padding: 10px 10px;
+    padding-left: 50px;
     margin-top: 10px;
     border: 2px solid black;
     position: relative;
@@ -93,9 +106,10 @@
     z-index: 1;
     border-radius: 10px;
     background-color: white;
-    
+
 }
-.noNewPost{
+
+.noNewPost {
     display: flex;
     flex-direction: column;
     border-radius: 15px;
@@ -109,19 +123,21 @@
     max-width: 500px;
     height: 170px;
     padding: 15px 5px;
-    
+
 }
 
-.noPost-postSection{
+.noPost-postSection {
     display: flex;
     gap: 10px;
 }
-.noPost-postSection img{
+
+.noPost-postSection img {
     width: 60px;
     height: 60px;
 }
-.newPostUpdater{
-  
+
+.newPostUpdater {
+
     width: 300px;
     height: fit-content;
     border: 1px solid orange;
@@ -130,72 +146,82 @@
     cursor: pointer;
 }
 
-.noPost-infoSection{
-display: flex;
-justify-content: space-around;
-align-items: center;
-width: 100%;
-max-width: 400px;
+.noPost-infoSection {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
 }
-.infoItem{
+
+.infoItem {
     display: flex;
     gap: 10px;
     width: fit-content;
     height: fit-content;
 }
-.infoItem img{
+
+.infoItem img {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    
+
 }
-.infoItem span{
+
+.infoItem span {
     margin-top: 4px;
 }
 
 
 @media screen and (max-width:600px) {
-    .noNewPost{
+    .noNewPost {
         max-width: 400px;
     }
-    .newPostUpdater{
+
+    .newPostUpdater {
         max-width: 190px;
         padding: 10px 5px;
         margin-top: 10px;
     }
-   
+
 }
+
 @media screen and (max-width:500px) {
-    .noPost-infoSection{
+    .noPost-infoSection {
         display: none;
     }
-    .noNewPost{
+
+    .noNewPost {
         width: fit-content;
         height: fit-content;
     }
-    .logo{
+
+    .logo {
         width: 40px;
         height: 40px;
     }
-    .title{
+
+    .title {
         font-weight: 300;
         font-style: normal;
         font-size: 15px;
     }
-    .circle{
+
+    .circle {
         width: 40px;
         height: 40px;
         position: relative;
         left: -10px;
         top: 5px;
     }
-    .user-username{
-        width: 80px;
-        
+
+    .user-username {
         display: flex;
         justify-content: flex-end;
         height: fit-content;
+        width: fit-content;
         padding: 5px 5px;
+        padding-left: 35px;
         margin-top: 10px;
         border: 2px solid black;
         position: relative;
@@ -203,6 +229,6 @@ max-width: 400px;
         z-index: 1;
         border-radius: 10px;
         background-color: white;
-        
+
     }
 }
