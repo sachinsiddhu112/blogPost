@@ -14,11 +14,11 @@ export const getAllPosts = async (req, res) => {
       const posts = await Post.find({}, 'username file.data file.contentType description topic likes comments');
       const list = posts.map(post => ({
         _id: post._id,
-        user: post.username ||'SachinSiddhu',
+        user: post.username ,
         topic:post.topic || "general",
         description:post.description,
-        comments:post.comments ||[],
-        likes:post.likes || 0,
+        comments:post.comments ,
+        likes:post.likes ,
         contentType: post.file.contentType,
         base64: Buffer.from(post.file.data).toString('base64'),
       }
@@ -48,11 +48,11 @@ export const getPost = async (req,res) => {
     }
     const selectedPost = {
       _id: post._id,
-      user: post.username ||'SachinSiddhu',
+      user: post.username ,
       topic:post.topic|| "general",
       description:post.description,
-      comments:post.comments || [],
-      likes:post.likes || 0,
+      comments:post.comments ,
+      likes:post.likes ,
       contentType: post.file.contentType,
       base64: Buffer.from(post.file.data).toString('base64'),
     }
@@ -133,8 +133,8 @@ export const updatePost = async (req,res) => {
       user: savedPost.username ||'SachinSiddhu',
       topic:savedPost.topic|| "general",
       description:savedPost.description,
-      comments:savedPost.comments || [],
-      likes:savedPost.likes || 0,
+      comments:savedPost.comments ,
+      likes:savedPost.likes ,
       contentType: savedPost.file.contentType,
       base64: Buffer.from(savedPost.file.data).toString('base64'),
     }
@@ -206,7 +206,7 @@ export const commentOnPost = async (req,res) =>{
     contentType: savedPost.file.contentType,
     base64: Buffer.from(savedPost.file.data).toString('base64'),
   }
-  res.status(200).json(savedPost);
+  res.status(200).json(newPost);
 }
 catch(error){
   console.log("error on adding comment",error);
@@ -228,7 +228,14 @@ export const likeOnPost = async (req,res) => {
 
     const post =  await Post.findById(req.params.id);
     
-    post.likes=post.likes + 1;
+    //removing the user who liked this post,if he double tap the like button.
+    if(post.likes.includes(user.username)){
+      post.likes = post.likes.filter(like => like != user.username);
+    }
+    else {
+      post.likes.push(user.username);
+    }
+
     const savedPost= await post.save();
     const newPost = {
       _id: savedPost._id,

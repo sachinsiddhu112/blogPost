@@ -1,4 +1,4 @@
-.login{
+.login {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,9 +6,9 @@
     height: 500px;
     margin: 0px;
     padding: 0px;
-    
 }
-.l-container{
+
+.l-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +20,8 @@
     border-radius: 10px;
     background-color: #495057;
 }
-.input-form{
+
+.input-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,17 +29,16 @@
     gap: 15px;
     width: 100%;
 }
-.formItem{
+
+.formItem {
     display: flex;
     flex-direction: column;
-    
     gap: 5px;
     width: 100%;
     max-width: 300px;
-
 }
 
-.input{
+.input {
     width: 100%;
     max-width: 300px;
     height: 20px;
@@ -47,7 +47,7 @@
     border-radius: 10px;
 }
 
-.l-btn{
+.l-btn {
     height: 30px;
     width: 200px;
     border: 2px solid #ff7d00;
@@ -55,7 +55,8 @@
     cursor: pointer;
     margin: auto;
 }
-.l-btn:hover{
+
+.l-btn:hover {
     background-color: #ff7d00;
     border: 2px solid white;
 }

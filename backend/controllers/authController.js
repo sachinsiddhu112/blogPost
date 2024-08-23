@@ -9,7 +9,7 @@ export const Signup = async (req, res) => {
     const { username, email, password, confirmPassword } = req.body;
     
     try {
-        console.log(req.body)
+       
         if (!username || !email || !password || !confirmPassword) {
             res.status(401).json({error:"Provide Your Credintials"});
             return;
@@ -39,6 +39,7 @@ export const Signup = async (req, res) => {
             email: email,
             password: hash
         })
+        
         const data = {
             user:{
                 id:newUser._id
@@ -71,6 +72,13 @@ try{
         res.status(401).json({error:"User doesn't exist,Sign up first"});
         return;
     }
+
+    const isMatch = bcrypt.compareSync(password,user.password);
+    if(!isMatch){
+        res.status(401).json({error:"Wrong password"});
+        return;
+    }
+    
     const data = {
         user:{
             id:user._id

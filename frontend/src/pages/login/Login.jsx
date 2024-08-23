@@ -1,37 +1,34 @@
-import React, { useState,useContext } from 'react'
-import { Link,useNavigate } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
 import "./Login.css"
 import { authContext } from '../../context/authContext';
 export default function Login() {
-    const {user,setUser,authToken,setAuthToken} = useContext(authContext)
+    //destructuring for setting user and authToken .
+    const { user, setUser, authToken, setAuthToken } = useContext(authContext)
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    const [error,setError] = useState("");
-   
+
+    //function to submit login credentials.
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
         //checking provided input wheather ther are empty or not
-        if(!username ||  !password ){
+        if (!username || !password) {
             alert("Provide all credentials.")
             return;
         }
-        
-        
-        try{
-            const response = await axios.post("http://localhost:3001/auth/login",{username,password})
-        
-        setUser(response.data.user.username);//setting the user in auth context
-        sessionStorage.setItem("user",JSON.stringify(response.data.user.username));//setting user in localStorage
-        setAuthToken(response.data.authToken);//setting authToken in authContext
-        sessionStorage.setItem('authToken',JSON.stringify(response.data.authToken));//settting authToken in localStorage.
-
-        navigate("/");}
-        catch(error){
-            console.log("Error in login in",error);
+        try {
+            const response = await axios.post("http://localhost:3001/auth/login", { username, password })
+            setUser(response.data.user.username);//setting the user in auth context
+            sessionStorage.setItem("user", JSON.stringify(response.data.user.username));//setting user in localStorage
+            setAuthToken(response.data.authToken);//setting authToken in authContext
+            sessionStorage.setItem('authToken', JSON.stringify(response.data.authToken));//settting authToken in localStorage.
+            navigate("/");
+        }
+        catch (error) {
+            console.log("Error in login in", error);
             alert(error.response.data.error)
         }
     }
@@ -60,7 +57,6 @@ export default function Login() {
                     </div>
                 </form>
             </div>
-
         </div>
     )
 }

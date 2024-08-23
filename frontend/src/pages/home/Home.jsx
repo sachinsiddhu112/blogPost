@@ -9,7 +9,6 @@ export default function Home() {
     <div className='home-container' >
       <Header/>
       <Posts/>
-
       <div className='footer' >
         <hr className='divider'/>
       <Footer/>
