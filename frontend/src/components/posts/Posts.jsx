@@ -12,7 +12,7 @@ export default function Posts() {
    //variables.
     const navigate = useNavigate();
     const { user } = useContext(authContext)
-    const [data, setData] = useState([]);
+    const [allPostsData, setAllPostsData] = useState([]);
     const [searchWithTopic, setSearchWithTopic] = useState(false);
     const [searchWithBlogger, setSearchWithBlogger] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
@@ -25,7 +25,7 @@ export default function Posts() {
         const fetchAllfiles = async () => {
             try {
                 const response = await axios.get('/post/allPosts');
-                setData(response.data);
+                setAllPostsData(response.data);
             } catch (error) {
                 console.error('Error fetching files:', error);
             }
@@ -35,7 +35,7 @@ export default function Posts() {
 
     //function to search and filter the posts as per user choices(blogger or topic)
     const filterData = () => {
-        console.log(searchInput)
+       
         if(!searchInput){
             alert("Please provide something in search.")
             return;
@@ -45,7 +45,7 @@ export default function Posts() {
             return;
         }
         else if(searchWithBlogger && !searchWithTopic){
-           const newData = data.filter((post) => {
+           const newData = allPostsData.filter((post) => {
             return post.user.toLowerCase().includes(searchInput);
            })
            if(newData.length == 0){
@@ -55,7 +55,7 @@ export default function Posts() {
            setFilteredData(newData);
         }
         else if(!searchWithBlogger && searchWithTopic){
-            const newData = data.filter((post) => {
+            const newData = allPostsData.filter((post) => {
                 return post.topic.toLowerCase().includes(searchInput);
             })
             if(newData.length == 0){
@@ -145,7 +145,7 @@ export default function Posts() {
             <div className='all-posts'>
                 {filteredData.length > 0 ? filteredData.map((post, ind) => (
                     filteredPost(post)))
-                    : data.map((post, ind) => (
+                    : allPostsData.map((post, ind) => (
                         filteredPost(post)))
                 }
             </div>
