@@ -32,7 +32,7 @@ export default function SignUp() {
             return;
         }
         try {
-            const response = await axios.post("http://localhost:3001/auth/signup", inputs);
+            const response = await axios.post("/auth/signup", inputs);
 
             setUser(response.data.response.username);//setting the user in context
             sessionStorage.setItem('user', JSON.stringify((response.data.response.username)));//setting the user in localstorage.

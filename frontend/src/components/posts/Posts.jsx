@@ -24,7 +24,7 @@ export default function Posts() {
     useEffect(() => {
         const fetchAllfiles = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/post/allPosts');
+                const response = await axios.get('/post/allPosts');
                 setData(response.data);
             } catch (error) {
                 console.error('Error fetching files:', error);

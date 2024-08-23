@@ -9,36 +9,27 @@ import postRoutes from "./routes/postRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 
 dotenv.config();
-
-
-const app =express ();
-
+const app = express();
 app.use(bodyParser.json());
 app.use(cors({
   origin: '*', // or your frontend domain
   allowedHeaders: ['Content-Type', 'authToken']
 }));
 
-
 //database connection;
-
 mongoose.connect(process.env.MONGO_URI).then(() => {
-    console.log('Connected to MongoDB');
-  }).catch(err => {
-    console.log('Failed to connect to MongoDB', err);
-  });
-
-
- //configure multer to handle files
-  const storage = multer.memoryStorage();
-  const upload = multer({ storage: storage });
-
-
-  //endpoint for user authorization
-  app.use("/auth",authRoutes)
-  //endpoint to upload post.
-  app.use("/post", upload.single("file"),postRoutes);
+  console.log('Connected to MongoDB');
+}).catch(err => {
+  console.log('Failed to connect to MongoDB', err);
+});
+//configure multer to handle files
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+//endpoint for user authorization and authentication.
+app.use("/auth", authRoutes)
+//endpoint  post handling.
+app.use("/post", upload.single("file"), postRoutes);
 
 app.listen(process.env.PORT, () => {
-    console.log(`Server is running on http://localhost:${process.env.PORT}`);
-  });
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
+});

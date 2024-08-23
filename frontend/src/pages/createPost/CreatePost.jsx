@@ -16,14 +16,17 @@ export default function CreatePost() {
     //function to upload the blog .
     const handleUpload = async () => {
         //input check while uploading the blog.
-        if (!file || !postTopic || !postDescription) return;
+        if (!file || !postTopic || !postDescription) {
+            alert("Fill in detials before posting your blog.")
+            return;
+        }
         const formData = new FormData();
         formData.append('file', file);
         formData.append('description', postDescription);
         formData.append("topic", postTopic);
 
         try {
-            const response = await axios.post('http://localhost:3001/post/upload', formData, {
+            const response = await axios.post('/post/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'authToken': JSON.parse(sessionStorage.getItem("authToken"))

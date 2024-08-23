@@ -35,7 +35,7 @@ export default function Post() {
   //loading the selectedPost .
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await axios.get(`http://localhost:3001/post/${id}`);
+      const response = await axios.get(`/post/${id}`);
       setSelectedPost(response.data);
     }
     fetchPost();
@@ -45,7 +45,7 @@ export default function Post() {
   //function for adding the like on blog.
   const likePost = async () => {
     try {
-      const response = await axios.post(`http://localhost:3001/post/likeOnPost/${id}`, {}, {
+      const response = await axios.post(`/post/likeOnPost/${id}`, {}, {
         headers: {
           'authToken': JSON.parse(sessionStorage.getItem('authToken'))
         }
@@ -65,7 +65,7 @@ export default function Post() {
     const formData = new FormData();
     formData.append('comment', comment);
     try {
-      const response = await axios.post(`http://localhost:3001/post/commentOnPost/${id}`, formData, {
+      const response = await axios.post(`/post/commentOnPost/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'authToken': JSON.parse(sessionStorage.getItem('authToken'))
@@ -87,7 +87,7 @@ export default function Post() {
   //for deleting the post.
   const deletePost = async () => {
     try {
-      const res = await axios.delete(`http://localhost:3001/post/delete/${id}`, {
+      const res = await axios.delete(`/post/delete/${id}`, {
         headers: {
           'authToken': JSON.parse(sessionStorage.getItem('authToken'))
         }
@@ -117,7 +117,7 @@ export default function Post() {
       if (postTopic) formData.append('topic', postTopic);
       if (postDescription) formData.append('description', postDescription);
       if (file) formData.append('file', file);
-      const res = await axios.put(`http://localhost:3001/post/update/${id}`, formData, {
+      const res = await axios.put(`/post/update/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'authToken': JSON.parse(sessionStorage.getItem('authToken'))
