@@ -26,7 +26,7 @@ export default function CreatePost() {
         formData.append("topic", postTopic);
 
         try {
-            const response = await axios.post('/post/upload', formData, {
+            const response = await axios.post('https://blogpost-rnxu.onrender.com/post/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'authToken': JSON.parse(sessionStorage.getItem("authToken"))
