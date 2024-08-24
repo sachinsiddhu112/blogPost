@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
 import { authContext } from '../../context/authContext';
+import {Comment ,BallTriangle} from 'react-loader-spinner';
 import "./Post.css";
 
 import { FaRegCommentDots } from "react-icons/fa";
@@ -10,6 +11,7 @@ import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Footer from '../../components/footer/Footer';
 import Header from '../../components/header/Header';
+
 export default function Post() {
   //variables.
   const { id } = useParams();
@@ -22,6 +24,8 @@ export default function Post() {
   const [postTopic, setPostTopic] = useState("");
   const navigate = useNavigate();
   const [editingPost, setEditingPost] = useState(false);
+  const [commentLoading,setCommentLoading] = useState(false);
+  const [loadingPost,setLoadingPost] = useState(false);
   const [selectedPost, setSelectedPost] = useState({
     user: 'SachinSiddhu',
     topic: "general",
@@ -34,12 +38,21 @@ export default function Post() {
 
   //loading the selectedPost .
   useEffect(() => {
-    const fetchPost = async () => {
+    setLoadingPost(true);
+
+   try{ const fetchPost = async () => {
       const response = await axios.get(`/post/${id}`);
       setSelectedPost(response.data);
+      setLoadingPost(false)
     }
+  
     fetchPost();
-  }, [likedOnPost, commentedOnPost])
+  }
+    catch(error){
+      alert(error.response.data.error);
+    }
+    
+  }, [])
 
 
   //function for adding the like on blog.
@@ -62,6 +75,7 @@ export default function Post() {
 
   //for commenting on the current post.
   const commentPost = async () => {
+    setCommentLoading(true);
     const formData = new FormData();
     formData.append('comment', comment);
     try {
@@ -74,10 +88,12 @@ export default function Post() {
       setCommentedOnPost(false);
       setComment("");
       setSelectedPost(response.data)
+      setCommentLoading(false);
       return;
     }
     catch (error) {
       console.log("Error in like", error)
+      setCommentLoading(false)
       setCommentedOnPost(false);
       setComment("");
       alert(error.response.data.error);
@@ -113,6 +129,7 @@ export default function Post() {
       return;
     }
     try {
+      setLoadingPost(true)
       const formData = new FormData();
       if (postTopic) formData.append('topic', postTopic);
       if (postDescription) formData.append('description', postDescription);
@@ -128,6 +145,7 @@ export default function Post() {
       }
       setSelectedPost(res.data);
       setEditingPost(false);
+      setLoadingPost(false)
     }
     catch (error) {
       console.log(error);
@@ -159,6 +177,19 @@ export default function Post() {
     <div className='container'>
       <Header hideNewPostSection={true} />
       <div>
+       {loadingPost ? 
+        <BallTriangle
+        height={200}
+        width={100}
+        radius={5}
+        color="#4fa94d"
+        ariaLabel="ball-triangle-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
+        />
+       :
+        <>
         {!editingPost ?
           <div className='post'>
             <div className="p-left">
@@ -196,10 +227,22 @@ export default function Post() {
                     <span>{selectedPost.likes.length}</span>
                   </div>
                   <div className="p-comment">
-                    <span >{<FaRegCommentDots size={25}
+                    {commentLoading ? 
+                    <Comment
+                    visible={true}
+                    height="40"
+                    width="40"
+                    ariaLabel="comment-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="comment-wrapper"
+                    color="#fff"
+                    backgroundColor="#F4442E"
+                    /> :
+                      <span >{<FaRegCommentDots size={25}
                       onClick={() => {
                         setCommentedOnPost(true);
                       }} />}</span>
+                      }
                     <span>{selectedPost.comments.length}</span>
                   </div>
                 </div>
@@ -238,6 +281,7 @@ export default function Post() {
             </div>
           </div>
         }
+        </>}
       </div>
       <hr className='divider' />
       <Footer />

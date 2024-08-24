@@ -3,29 +3,32 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { FaRegCommentDots } from "react-icons/fa";//icons
-import { BiLike,BiSolidLike } from "react-icons/bi";
-
+import { BiLike, BiSolidLike } from "react-icons/bi";
+import {BallTriangle} from 'react-loader-spinner';
 
 import "./Posts.css"
 import { authContext } from '../../context/authContext';//user context.
 export default function Posts() {
-   //variables.
+    //variables.
     const navigate = useNavigate();
     const { user } = useContext(authContext)
     const [allPostsData, setAllPostsData] = useState([]);
     const [searchWithTopic, setSearchWithTopic] = useState(false);
     const [searchWithBlogger, setSearchWithBlogger] = useState(false);
-    const [filteredData, setFilteredData] = useState([]);
-    const [searchInput,setSearchInput] = useState("");
+    const [filteredData, setFilteredData] = useState(allPostsData);
+    const [searchInput, setSearchInput] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
-
-//useEffect to load data from backend.
+    //useEffect to load data from backend.
     useEffect(() => {
         const fetchAllfiles = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get('/post/allPosts');
                 setAllPostsData(response.data);
+                setFilteredData(response.data);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching files:', error);
             }
@@ -35,36 +38,36 @@ export default function Posts() {
 
     //function to search and filter the posts as per user choices(blogger or topic)
     const filterData = () => {
-       
-        if(!searchInput){
+
+        if (!searchInput) {
             alert("Please provide something in search.")
             return;
         }
-        if(!searchWithBlogger && !searchWithTopic){
-            alert("Please select one criteria for searching ,Blogger or Topic");
+        if (!searchWithBlogger && !searchWithTopic) {
+            alert("Please select one criteria,Blogger or Topic.");
             return;
         }
-        else if(searchWithBlogger && !searchWithTopic){
-           const newData = allPostsData.filter((post) => {
-            return post.user.toLowerCase().includes(searchInput);
-           })
-           if(newData.length == 0){
-            alert("No item to show.")
-            return;
-           }
-           setFilteredData(newData);
+        else if (searchWithBlogger && !searchWithTopic) {
+            const newData = allPostsData.filter((post) => {
+                return post.user.toLowerCase().includes(searchInput);
+            })
+            if (newData.length == 0) {
+                alert("No item to show.")
+                return;
+            }
+            setFilteredData(newData);
         }
-        else if(!searchWithBlogger && searchWithTopic){
+        else if (!searchWithBlogger && searchWithTopic) {
             const newData = allPostsData.filter((post) => {
                 return post.topic.toLowerCase().includes(searchInput);
             })
-            if(newData.length == 0){
+            if (newData.length == 0) {
                 alert("No item to show.");
                 return;
-               }
+            }
             setFilteredData(newData);
         }
-        else if(searchWithBlogger && searchWithTopic){
+        else if (searchWithBlogger && searchWithTopic) {
             alert("You cann't search with both.")
             return;
         }
@@ -90,7 +93,7 @@ export default function Posts() {
     }
 
     //function to provide filtered posts.
-    const filteredPost = (post) => {
+    const showPost = (post) => {
         return (
             <div key={post._id} className='all-posts-post'>
                 <div className='all-posts-post-details'
@@ -104,12 +107,12 @@ export default function Posts() {
                 </div>
                 <div className='p-like-comment'>
                     <div className='p-like'>
-                        <span >{ 
-                        !post.likes.includes(user) ? <BiLike size={27}
-                         onClick={() => {
-                            alert("Please visit the blog for like.")
-                        }} />  :
-                         <BiSolidLike size={27}/>}</span>
+                        <span >{
+                            !post.likes.includes(user) ? <BiLike size={27}
+                                onClick={() => {
+                                    alert("Please visit the blog for like.")
+                                }} /> :
+                                <BiSolidLike size={27} />}</span>
                         <span>{post.likes.length}</span>
                     </div>
                     <div className="p-comment">
@@ -121,34 +124,47 @@ export default function Posts() {
                     </div>
                 </div>
             </div>
-            ) }
+        )
+    }
     return (
         <div className='post-container'>
             <div className='search-post'>
                 <div className='search-bar'>
-                    <input type='text' className='search-input' placeholder='search' onChange={(e) => setSearchInput(e.target.value.toLowerCase())}/>
+                    <input type='text' className='search-input' placeholder='search' onChange={(e) => setSearchInput(e.target.value.toLowerCase())} />
                     <button className='search-btn' onClick={filterData}>Search</button>
                 </div>
                 <div className='search-selectors'>
-                <div className='search-selector'>
-                    <span>Topic</span>
-                    <input type='checkbox' className='search-by-topic' value={searchWithTopic}
-                        onChange={() => setSearchWithTopic((prev) => !prev)} />
-                </div>
-                <div className='search-selector'>
-                    <span>Blogger</span>
-                    <input type='checkbox' className='search-by-blogger' value={searchWithBlogger}
-                        onChange={() => setSearchWithBlogger((prev) => !prev)} />
-                </div>
+                    <div className='search-selector'>
+                        <span>Topic</span>
+                        <input type='checkbox' className='search-by-topic' value={searchWithTopic}
+                            onChange={() => setSearchWithTopic((prev) => !prev)} />
+                    </div>
+                    <div className='search-selector'>
+                        <span>Blogger</span>
+                        <input type='checkbox' className='search-by-blogger' value={searchWithBlogger}
+                            onChange={() => setSearchWithBlogger((prev) => !prev)} />
+                    </div>
+                    <div className='search-selector'>
+                        <button className='clear-btn' onClick={() => setFilteredData(allPostsData)}>Clear</button>
+                    </div>
                 </div>
             </div>
-            <div className='all-posts'>
-                {filteredData.length > 0 ? filteredData.map((post, ind) => (
-                    filteredPost(post)))
-                    : allPostsData.map((post, ind) => (
-                        filteredPost(post)))
-                }
-            </div>
+            {loading ?
+               <BallTriangle
+                height={200}
+                width={100}
+                radius={5}
+                color="#4fa94d"
+                ariaLabel="ball-triangle-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+                />
+                : <div className='all-posts'>
+                    {filteredData.map((post, ind) => (
+                        showPost(post)))
+                    }
+                </div>}
         </div>
     )
 }

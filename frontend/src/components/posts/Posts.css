@@ -48,6 +48,10 @@
     color: white;
     gap: 5px;
 }
+.clear-btn{
+    border-radius: 10px;
+    cursor: pointer;
+}
 .all-posts{
     display: flex;
     flex-direction: column;
