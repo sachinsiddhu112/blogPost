@@ -11,11 +11,17 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    top: 200px;
+    top: 290px;
     background-color: black;
 }
 .divider{
     width: 100%;
     border: 1px solid white;
     margin-top: 30px;
+}
+
+@media  screen and (max-width:600px) {
+    .footer{
+        top: 200px;
+    }
 }
