@@ -28,9 +28,12 @@ export default function Posts() {
                 const response = await axios.get('https://blogpost-rnxu.onrender.com/post/allPosts');
                 setAllPostsData(response.data);
                 setFilteredData(response.data);
-                setLoading(false);
+               
             } catch (error) {
                 console.error('Error fetching files:', error);
+            }
+            finally{
+                setLoading(false);
             }
         };
         fetchAllfiles();
@@ -72,7 +75,13 @@ export default function Posts() {
             return;
         }
     }
-
+ 
+    const clearFilter = () =>{
+        setFilteredData(allPostsData)
+        setSearchInput("")
+        setSearchWithBlogger(false);
+        setSearchWithTopic(false);
+    }
     //rendering the file  section of each blog on web page,according to it's type(document,video,image).
     const renderFile = (file) => {
         const base64Data = `data:${file.contentType};base64,${file.base64}`;
@@ -101,12 +110,14 @@ export default function Posts() {
                     <div className='user-details'>
                         <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${post.user + post.user}`} alt='owner' />
                         <span className='user-name'>{post.user}</span>
+                        
                     </div>
-                    <span className='tag'>{post.topic}</span>
+                    <span className='p-tag'>{post.topic}</span>
+                    <span className='p-desc'>{post.description.substring(0,30)}...</span>
                     {renderFile(post)}
                 </div>
-                <div className='p-like-comment'>
-                    <div className='p-like'>
+                <div className='post-like-comment'>
+                    <div className='post-like'>
                         <span >{
                             !post.likes.includes(user) ? <BiLike size={27}
                                 onClick={() => {
@@ -115,7 +126,7 @@ export default function Posts() {
                                 <BiSolidLike size={27} />}</span>
                         <span>{post.likes.length}</span>
                     </div>
-                    <div className="p-comment">
+                    <div className="post-comment">
                         <span >{<FaRegCommentDots size={25}
                             onClick={() => {
                                 alert("Please visit the blog for commenting.")
@@ -130,22 +141,22 @@ export default function Posts() {
         <div className='post-container'>
             <div className='search-post'>
                 <div className='search-bar'>
-                    <input type='text' className='search-input' placeholder='search' onChange={(e) => setSearchInput(e.target.value.toLowerCase())} />
+                    <input type='text' className='search-input' placeholder='search' value={searchInput} onChange={(e) => setSearchInput(e.target.value.toLowerCase())} />
                     <button className='search-btn' onClick={filterData}>Search</button>
                 </div>
                 <div className='search-selectors'>
                     <div className='search-selector'>
                         <span>Topic</span>
-                        <input type='checkbox' className='search-by-topic' value={searchWithTopic}
+                        <input type='checkbox' className='search-by-topic' checked={searchWithTopic}
                             onChange={() => setSearchWithTopic((prev) => !prev)} />
                     </div>
                     <div className='search-selector'>
                         <span>Blogger</span>
-                        <input type='checkbox' className='search-by-blogger' value={searchWithBlogger}
+                        <input type='checkbox' className='search-by-blogger' checked={searchWithBlogger}
                             onChange={() => setSearchWithBlogger((prev) => !prev)} />
                     </div>
                     <div className='search-selector'>
-                        <button className='clear-btn' onClick={() => setFilteredData(allPostsData)}>Clear</button>
+                        <button className='clear-btn' onClick={clearFilter}>Clear</button>
                     </div>
                 </div>
             </div>

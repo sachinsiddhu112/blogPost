@@ -3,6 +3,7 @@
     width: 100%;
     min-height: 100vh;
     max-width: 130%;
+    overflow: hidden;
     
 }
 .footer{
@@ -22,6 +23,6 @@
 
 @media  screen and (max-width:600px) {
     .footer{
-        top: 200px;
+        top: 190px;
     }
 }

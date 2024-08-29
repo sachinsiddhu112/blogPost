@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
 import { authContext } from '../../context/authContext';
-import {Comment ,BallTriangle} from 'react-loader-spinner';
+import { Comment, BallTriangle } from 'react-loader-spinner';
 import "./Post.css";
 
 import { FaRegCommentDots } from "react-icons/fa";
@@ -24,8 +24,8 @@ export default function Post() {
   const [postTopic, setPostTopic] = useState("");
   const navigate = useNavigate();
   const [editingPost, setEditingPost] = useState(false);
-  const [commentLoading,setCommentLoading] = useState(false);
-  const [loadingPost,setLoadingPost] = useState(false);
+  const [commentLoading, setCommentLoading] = useState(false);
+  const [loadingPost, setLoadingPost] = useState(false);
   const [selectedPost, setSelectedPost] = useState({
     user: 'SachinSiddhu',
     topic: "general",
@@ -40,18 +40,19 @@ export default function Post() {
   useEffect(() => {
     setLoadingPost(true);
 
-   try{ const fetchPost = async () => {
-      const response = await axios.get(`https://blogpost-rnxu.onrender.com/post/${id}`);
-      setSelectedPost(response.data);
-      setLoadingPost(false)
+    try {
+      const fetchPost = async () => {
+        const response = await axios.get(`https://blogpost-rnxu.onrender.com/post/${id}`);
+        setSelectedPost(response.data);
+        setLoadingPost(false)
+      }
+
+      fetchPost();
     }
-  
-    fetchPost();
-  }
-    catch(error){
+    catch (error) {
       alert(error.response.data.error);
     }
-    
+
   }, [])
 
 
@@ -100,6 +101,13 @@ export default function Post() {
     }
   }
 
+  //
+  const handleEditPostModal = () => {
+    user ?
+      (user == selectedPost.user ? setEditingPost(true)
+        : alert("You are not authorized for this operation"))
+      : alert("You have to log in.")
+  }
   //for deleting the post.
   const deletePost = async () => {
     try {
@@ -177,111 +185,111 @@ export default function Post() {
     <div className='container'>
       <Header hideNewPostSection={true} />
       <div>
-       {loadingPost ? 
-        <BallTriangle
-        height={200}
-        width={100}
-        radius={5}
-        color="#4fa94d"
-        ariaLabel="ball-triangle-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
-        visible={true}
-        />
-       :
-        <>
-        {!editingPost ?
-          <div className='post'>
-            <div className="p-left">
-              <div className="p-left-top">
-                <div className='user-details'>
-                  <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${selectedPost.user + selectedPost.user}`} alt='owner' />
-                  <span className='user-name'>{selectedPost.user}</span>
-                </div>
-                <div className="p-edit-remove">
-                  <span onClick={() => setEditingPost(true)}><FiEdit size={20} /></span>
-                  <span onClick={deletePost}>< RiDeleteBin6Line size={20} /></span>
-                </div>
-              </div>
-              <span className='tag'>{selectedPost.topic}</span>
-              <div className='file-container'
-              >{renderFile(selectedPost)}</div>
-            </div>
-            <div className="p-right">
-              <div className='p-right-description'>
-                {selectedPost.description}
-              </div>
-              {!commentedOnPost ?
-                <div className='p-like-comment'>
-                  <div className='p-like'>
-                    <span >{!selectedPost.likes?.includes(user) ?
-                      <BiLike size={27} onClick={() => {
-                        setLikedOnPost(true)
-                        likePost()
-                      }} /> :
-                      <BiSolidLike size={27} onClick={() => {
-                        setLikedOnPost(true);
-                        likePost();
-                      }} />
-                    }</span>
-                    <span>{selectedPost.likes.length}</span>
-                  </div>
-                  <div className="p-comment">
-                    {commentLoading ? 
-                    <Comment
-                    visible={true}
-                    height="40"
-                    width="40"
-                    ariaLabel="comment-loading"
-                    wrapperStyle={{}}
-                    wrapperClass="comment-wrapper"
-                    color="#fff"
-                    backgroundColor="#F4442E"
-                    /> :
-                      <span >{<FaRegCommentDots size={25}
-                      onClick={() => {
-                        setCommentedOnPost(true);
-                      }} />}</span>
-                      }
-                    <span>{selectedPost.comments.length}</span>
-                  </div>
-                </div>
-                :
-                <div className='comment'>
-                  <h3>Add Comment</h3>
-                  <textarea type="text" className='comment-input' value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
-                  <button className='add-comment-btn' onClick={() => {
-                    setCommentedOnPost(false);
-                    commentPost();
-                  }}>Post</button>
-                  <button className='cancel-comment-btn' onClick={() => setCommentedOnPost(false)}>Cancel</button>
-                </div>
-              }
-            </div>
-          </div>
+        {loadingPost ?
+          <BallTriangle
+            height={200}
+            width={100}
+            radius={5}
+            color="#4fa94d"
+            ariaLabel="ball-triangle-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
           :
-          <div className="editpost-section">
-            <div className='inputs'>
-              <div className='topic inputItem'>
-                <label className='t-label'>Topic</label>
-                <input type='text' className='topic-input' onChange={(e) => setPostTopic(e.target.value)} placeholder=' Blog topic' />
+          <>
+            {!editingPost ?
+              <div className='post'>
+                <div className="p-left">
+                  <div className="p-left-top">
+                    <div className='user-details'>
+                      <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${selectedPost.user + selectedPost.user}`} alt='owner' />
+                      <span className='user-name'>{selectedPost.user}</span>
+                    </div>
+                    <div className="p-edit-remove">
+                      <span onClick={ handleEditPostModal}><FiEdit size={20} /></span>
+                      <span onClick={deletePost}>< RiDeleteBin6Line size={20} /></span>
+                    </div>
+                  </div>
+                  <span className='tag'>{selectedPost.topic}</span>
+                  <div className='file-container'
+                  >{renderFile(selectedPost)}</div>
+                </div>
+                <div className="p-right">
+                  <div className='p-right-description'>
+                    {selectedPost.description}
+                  </div>
+                  {!commentedOnPost ?
+                    <div className='p-like-comment'>
+                      <div className='p-like'>
+                        <span >{!selectedPost.likes?.includes(user) ?
+                          <BiLike size={27} onClick={() => {
+                            setLikedOnPost(true)
+                            likePost()
+                          }} /> :
+                          <BiSolidLike size={27} onClick={() => {
+                            setLikedOnPost(true);
+                            likePost();
+                          }} />
+                        }</span>
+                        <span>{selectedPost.likes.length}</span>
+                      </div>
+                      <div className="p-comment">
+                        {commentLoading ?
+                          <Comment
+                            visible={true}
+                            height="40"
+                            width="40"
+                            ariaLabel="comment-loading"
+                            wrapperStyle={{}}
+                            wrapperClass="comment-wrapper"
+                            color="#fff"
+                            backgroundColor="#F4442E"
+                          /> :
+                          <span >{<FaRegCommentDots size={25}
+                            onClick={() => {
+                              setCommentedOnPost(true);
+                            }} />}</span>
+                        }
+                        <span>{selectedPost.comments.length}</span>
+                      </div>
+                    </div>
+                    :
+                    <div className='comment'>
+                      <h3>Add Comment</h3>
+                      <textarea type="text" className='comment-input' value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
+                      <button className='add-comment-btn' onClick={() => {
+                        setCommentedOnPost(false);
+                        commentPost();
+                      }}>Post</button>
+                      <button className='cancel-comment-btn' onClick={() => setCommentedOnPost(false)}>Cancel</button>
+                    </div>
+                  }
+                </div>
               </div>
-              <div className='description inputItem'>
+              :
+              <div className="editpost-section">
+                <div className='inputs'>
+                  <div className='topic inputItem'>
+                    <label className='t-label'>Topic</label>
+                    <input type='text' className='topic-input' onChange={(e) => setPostTopic(e.target.value)} placeholder=' Blog topic' />
+                  </div>
+                  <div className='description inputItem'>
 
-                <label className='d-label' >Description</label>
-                <textarea type='text' className='description-input' onChange={(e) => setPostDescription(e.target.value)} placeholder='Blog content'></textarea>
+                    <label className='d-label' >Description</label>
+                    <textarea type='text' className='description-input' onChange={(e) => setPostDescription(e.target.value)} placeholder='Blog content'></textarea>
+                  </div>
+                  <div className='file inputItem'>
+                    <label className='f-label'>File</label>
+                    <input type='file' className='file-input' onChange={handlefile} placeholder='no file' >
+                    </input>
+                  </div>
+                  <button onClick={editPost} className='btn'>Post</button>
+                  <button className='btn' onClick={() => setEditingPost(false)} >Cancel</button>
+                </div>
               </div>
-              <div className='file inputItem'>
-                <label className='f-label'>File</label>
-                <input type='file' className='file-input' onChange={handlefile} placeholder='no file' >
-                </input>
-              </div>
-              <button onClick={editPost} className='btn'>Post</button>
-              <button className='btn' onClick={() => setEditingPost(false)} >Cancel</button>
-            </div>
-          </div>
-        }
-        </>}
+            }
+          </>}
       </div>
       <hr className='divider' />
       <Footer />

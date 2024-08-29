@@ -10,7 +10,7 @@ export default function Footer() {
       <span>© 2024 @BlogPost. All Rights Reserved.</span>
       <span>Privacy Policy | Terms of Service</span>
       <div className='social-media'>
-        <span>Follow us on:</span><FaXTwitter size={20}/> <FiGithub size={20}/> <CiLinkedin size={20}/></div>
+        <span>Follow us on:</span><FaXTwitter size={20}/> <FiGithub size={20}/> <CiLinkedin size={25}/></div>
     </div>
   )
 }

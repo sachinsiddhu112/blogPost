@@ -12,12 +12,18 @@ export default function Header(props) {
     const { user } = useContext(authContext);//context of signed in user with it's username.
     const navigate = useNavigate();
     const { hideNewPostSection } = props;//prop used to hide new pose creation section on single post page.
+    //function to create new post.
+    const createPost = () => {
+    //checking user loged in or not.
+     user ? navigate("/createPost") : alert("You have to login to create your blog.");
+     return;
+    }
     return (
         <div className='h-container'>
             <div className="header">
                 <div className="h-top">
                     <div className="h-top-left" onClick={() => navigate("/")}>
-                        <img src={Logo} alt='BP' className='logo' />
+                        
                         <span className='title'>BlogPost</span>
                     </div>
                     <div className="h-top-right">
@@ -38,7 +44,7 @@ export default function Header(props) {
             {!hideNewPostSection && <div className='noNewPost'>
                 <div className='noPost-postSection' >
                     <img src={`https://avatar.iran.liara.run/username?username=${user + user}`} alt="loading" />
-                    <div className='newPostUpdater' onClick={() => navigate("/createPost")}>Create Your New Blog...</div>
+                    <div className='newPostUpdater' onClick={createPost}>Create Your New Blog...</div>
                 </div>
                 <div className='noPost-infoSection'>
                     <div className='infoItem'>

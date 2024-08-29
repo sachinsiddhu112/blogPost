@@ -50,6 +50,7 @@
 }
 .clear-btn{
     border-radius: 10px;
+    padding: 5px 5px;
     cursor: pointer;
 }
 .all-posts{
@@ -68,7 +69,7 @@
 .all-posts-post{
     width: 100%;
     max-width: 700px;
-    height: 620px;
+    height: 650px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -107,14 +108,13 @@
     color: rgb(84, 169, 198);
     margin-top: 12px;
 }
-.tag{
+.p-tag{
     color: #3a86ff;
 }
-
-.all-posts-post-description{
-    display: flex;
-    gap: 5px;
+.p-desc{
+    color: white;
 }
+
 .all-posts-post-file{
     width: 100%;
     max-width: 700px;
@@ -130,13 +130,14 @@
 }
 
 
-.p-like-comment{
+.post-like-comment{
     display: flex;
-    gap: 15px;
+    gap: 10px;
     color: white;
+    margin-left: 17px;
    
 }
-.p-like{
+.post-like{
     display: flex;
     gap: 5px;
     border: 1px solid rgb(0, 170, 255);
@@ -147,7 +148,7 @@
     
     cursor: pointer;
 }
-.p-comment{
+.post-comment{
     display: flex;
     gap: 5px;
     border: 1px solid white;
@@ -181,7 +182,7 @@ max-width: 600px;
         margin: auto;
     }
     .all-posts-post{
-        height: 510px;
+        height: 550px;
         max-width: 350px;
         padding: 10px 10px;
     }
