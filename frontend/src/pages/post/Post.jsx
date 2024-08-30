@@ -101,13 +101,8 @@ export default function Post() {
     }
   }
 
-  //
-  const handleEditPostModal = () => {
-    user ?
-      (user == selectedPost.user ? setEditingPost(true)
-        : alert("You are not authorized for this operation"))
-      : alert("You have to log in.")
-  }
+ 
+  
   //for deleting the post.
   const deletePost = async () => {
     try {
@@ -206,10 +201,10 @@ export default function Post() {
                       <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${selectedPost.user + selectedPost.user}`} alt='owner' />
                       <span className='user-name'>{selectedPost.user}</span>
                     </div>
-                    <div className="p-edit-remove">
-                      <span onClick={ handleEditPostModal}><FiEdit size={20} /></span>
+                    { user == selectedPost.user && <div className="p-edit-remove">
+                      <span onClick={() => setEditingPost(true)}><FiEdit size={20} /></span>
                       <span onClick={deletePost}>< RiDeleteBin6Line size={20} /></span>
-                    </div>
+                    </div>}
                   </div>
                   <span className='tag'>{selectedPost.topic}</span>
                   <div className='file-container'
