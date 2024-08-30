@@ -20,7 +20,7 @@ export default function Login() {
             return;
         }
         try {
-            const response = await axios.post("https://blogpost-rnxu.onrender.com/auth/login", { username, password })
+            const response = await axios.post("https://blog-post-backend.vercel.app/auth/login", { username, password })
             setUser(response.data.user.username);//setting the user in auth context
             sessionStorage.setItem("user", JSON.stringify(response.data.user.username));//setting user in localStorage
             setAuthToken(response.data.authToken);//setting authToken in authContext

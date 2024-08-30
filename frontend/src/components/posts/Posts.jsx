@@ -25,7 +25,7 @@ export default function Posts() {
         const fetchAllfiles = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('https://blogpost-rnxu.onrender.com/post/allPosts');
+                const response = await axios.get('https://blog-post-backend.vercel.app/post/allPosts');
                 setAllPostsData(response.data);
                 setFilteredData(response.data);
                

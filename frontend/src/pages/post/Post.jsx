@@ -42,7 +42,7 @@ export default function Post() {
 
     try {
       const fetchPost = async () => {
-        const response = await axios.get(`https://blogpost-rnxu.onrender.com/post/${id}`);
+        const response = await axios.get(`https://blog-post-backend.vercel.app/post/${id}`);
         setSelectedPost(response.data);
         setLoadingPost(false)
       }
@@ -59,7 +59,7 @@ export default function Post() {
   //function for adding the like on blog.
   const likePost = async () => {
     try {
-      const response = await axios.post(`https://blogpost-rnxu.onrender.com/post/likeOnPost/${id}`, {}, {
+      const response = await axios.post(`https://blog-post-backend.vercel.app/post/likeOnPost/${id}`, {}, {
         headers: {
           'authToken': JSON.parse(sessionStorage.getItem('authToken'))
         }
@@ -80,7 +80,7 @@ export default function Post() {
     const formData = new FormData();
     formData.append('comment', comment);
     try {
-      const response = await axios.post(`https://blogpost-rnxu.onrender.com/post/commentOnPost/${id}`, formData, {
+      const response = await axios.post(`https://blog-post-backend.vercel.app/post/commentOnPost/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'authToken': JSON.parse(sessionStorage.getItem('authToken'))
@@ -111,7 +111,7 @@ export default function Post() {
   //for deleting the post.
   const deletePost = async () => {
     try {
-      const res = await axios.delete(`https://blogpost-rnxu.onrender.com/post/delete/${id}`, {
+      const res = await axios.delete(`https://blog-post-backend.vercel.app/post/delete/${id}`, {
         headers: {
           'authToken': JSON.parse(sessionStorage.getItem('authToken'))
         }
@@ -142,7 +142,7 @@ export default function Post() {
       if (postTopic) formData.append('topic', postTopic);
       if (postDescription) formData.append('description', postDescription);
       if (file) formData.append('file', file);
-      const res = await axios.put(`https://blogpost-rnxu.onrender.com/post/update/${id}`, formData, {
+      const res = await axios.put(`https://blog-post-backend.vercel.app/post/update/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'authToken': JSON.parse(sessionStorage.getItem('authToken'))
