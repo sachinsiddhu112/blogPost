@@ -3,7 +3,8 @@
     width: 100%;
     min-height: 100vh;
     max-width: 130%;
-    
+    padding-bottom: 40px;
+    background-image: url("../../assets/background-2.jpg");
     
 }
 .footer{
@@ -13,13 +14,9 @@
     align-items: center;
     position: relative;
     top: 190px;
-    background-color: black;
+    background-image: url("../../assets/background-2.jpg");
 }
-.divider{
-    width: 100%;
-    border: 1px solid white;
-    margin-top: 30px;
-}
+
 
 @media  screen and (max-width:600px) {
     .footer{

@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { motion, useScroll, useTransform} from 'framer-motion';
 import { FaRegCommentDots } from "react-icons/fa";//icons
 import { BiLike, BiSolidLike } from "react-icons/bi";
-import {BallTriangle} from 'react-loader-spinner';
-
+import { BallTriangle } from 'react-loader-spinner';
+import articleImag from "../../assets/articleImag.jpg";
+import documentImage from "../../assets/documentImage.jpg";
+import multimediaImge from '../../assets/MultimediaImage.jpg';
 import "./Posts.css"
 import { authContext } from '../../context/authContext';//user context.
 export default function Posts() {
     //variables.
     const navigate = useNavigate();
+    const ref = useRef(null);
     const { user } = useContext(authContext)
     const [allPostsData, setAllPostsData] = useState([]);
     const [searchWithTopic, setSearchWithTopic] = useState(false);
@@ -19,7 +22,11 @@ export default function Posts() {
     const [searchInput, setSearchInput] = useState("");
     const [loading, setLoading] = useState(false);
 
-
+    const { scrollYProgress } = useScroll({
+        target:ref,
+        offset:["0 1","1.2 1"]
+    })
+    const scalePost = useTransform(scrollYProgress,[0,.5,1],[.5,1,.5],{clamp:true})
     //useEffect to load data from backend.
     useEffect(() => {
         const fetchAllfiles = async () => {
@@ -28,17 +35,23 @@ export default function Posts() {
                 const response = await axios.get('https://blog-post-backend.vercel.app/post/allPosts');
                 setAllPostsData(response.data);
                 setFilteredData(response.data);
-               
+
             } catch (error) {
                 console.error('Error fetching files:', error);
             }
-            finally{
+            finally {
                 setLoading(false);
             }
         };
         fetchAllfiles();
     }, [])
 
+
+    const createPost = () => {
+        //checking user loged in or not.
+         user ? navigate("/createPost") : alert("You have to login to create your blog.");
+         return;
+        }
     //function to search and filter the posts as per user choices(blogger or topic)
     const filterData = () => {
 
@@ -75,8 +88,8 @@ export default function Posts() {
             return;
         }
     }
- 
-    const clearFilter = () =>{
+
+    const clearFilter = () => {
         setFilteredData(allPostsData)
         setSearchInput("")
         setSearchWithBlogger(false);
@@ -104,16 +117,19 @@ export default function Posts() {
     //function to provide filtered posts.
     const showPost = (post) => {
         return (
-            <div key={post._id} className='all-posts-post'>
+            <motion.div key={post._id} className='all-posts-post' 
+           initial={{scale:.8}}
+           whileInView={{scale:1}} 
+           transition={{duration:1,type:'tween'}}>
                 <div className='all-posts-post-details'
                     onClick={() => navigate(`/post/${post._id}`)}>
                     <div className='user-details'>
                         <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${post.user + post.user}`} alt='owner' />
                         <span className='user-name'>{post.user}</span>
-                        
+
                     </div>
                     <span className='p-tag'>{post.topic}</span>
-                    <span className='p-desc'>{post.description.substring(0,30)}...</span>
+                    <span className='p-desc'>{post.description.substring(0, 30)}...</span>
                     {renderFile(post)}
                 </div>
                 <div className='post-like-comment'>
@@ -134,12 +150,33 @@ export default function Posts() {
                         <span>{post.comments.length}</span>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         )
     }
     return (
-        <div className='post-container'>
-            <div className='search-post'>
+        <div className='post-container' >
+            <div className='noNewPost'>
+                <div className='noPost-postSection' >
+                    <img src={`https://avatar.iran.liara.run/username?username=${user + user}`} alt="loading" />
+                    <div className='newPostUpdater' onClick={createPost}>Create Your New Blog...</div>
+                </div>
+                <div className='noPost-infoSection'>
+                    <div className='infoItem'>
+                        <img src={multimediaImge} />
+                        <span>Images</span>
+                    </div>
+                    <div className='infoItem'>
+                        <img src={documentImage} />
+                        <span>Documents</span>
+                    </div>
+                    <div className='infoItem'>
+                        <img src={articleImag} />
+                        <span>Ariticles</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className='search-post' >
                 <div className='search-bar'>
                     <input type='text' className='search-input' placeholder='search' value={searchInput} onChange={(e) => setSearchInput(e.target.value.toLowerCase())} />
                     <button className='search-btn' onClick={filterData}>Search</button>
@@ -161,17 +198,17 @@ export default function Posts() {
                 </div>
             </div>
             {loading ?
-               <BallTriangle
-                height={200}
-                width={100}
-                radius={5}
-                color="#4fa94d"
-                ariaLabel="ball-triangle-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
-                visible={true}
+                <BallTriangle
+                    height={200}
+                    width={100}
+                    radius={5}
+                    color="#4fa94d"
+                    ariaLabel="ball-triangle-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
                 />
-                : <div className='all-posts'>
+                : <div className='all-posts' >
                     {filteredData.map((post, ind) => (
                         showPost(post)))
                     }

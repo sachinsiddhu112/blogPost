@@ -6,6 +6,7 @@
     height: 100vh;
     margin: 0px;
     padding: 0px;
+   
 }
 
 .l-container {
@@ -15,11 +16,25 @@
     align-items: center;
     padding: 10px 10px;
     width: 100%;
+    position: relative;
     max-width: 600px;
-    border: 2px solid black;
+  
     border-radius: 10px;
-    background-color: #495057;
+    z-index: 1;
+    
 }
+.l-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: whitesmoke;
+    opacity: 0.2; 
+    z-index: -9; 
+    border-radius: 10px;
+  }
 
 .input-form {
     display: flex;
@@ -28,6 +43,7 @@
     align-items: center;
     gap: 15px;
     width: 100%;
+   
 }
 
 .formItem {

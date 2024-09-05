@@ -90,25 +90,12 @@
     min-height: fit-content;
     max-height: 400px;
     overflow: scroll;
+    -ms-overflow-style: none;
 }
 
 .p-right-description::-webkit-scrollbar {
-    width: 5px;
-    /* Width of the scrollbar */
-}
-
-.p-right-description::-webkit-scrollbar-thumb {
-    background-color: white;
-    /* Scrollbar color */
-    border-radius: 6px;
-    /* Round scrollbar edges */
-}
-
-/* Scrollbar track */
-.p-right-description::-webkit-scrollbar-track {
-    background-color: black;
-    /* Track color */
-}
+    display: none; /* Hides scrollbar for Chrome, Safari, Edge */
+  }
 
 .p-like-comment {
     display: flex;

@@ -1,26 +1,28 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { motion, useScroll, useTransform} from 'framer-motion';
 
-import articleImag from "../../assets/articleImag.jpg";
-import documentImage from "../../assets/documentImage.jpg";
-import multimediaImge from '../../assets/MultimediaImage.jpg';
 import Logo from "../../assets/logo.jpg";
+import background1 from "../../assets/background-1.jpg";
+import background_sub from "../../assets/background-sub-1.png";
 import "./Header.css"
 import { authContext } from '../../context/authContext';
 export default function Header(props) {
 
     const { user } = useContext(authContext);//context of signed in user with it's username.
     const navigate = useNavigate();
-    const { hideNewPostSection } = props;//prop used to hide new pose creation section on single post page.
-    //function to create new post.
-    const createPost = () => {
-    //checking user loged in or not.
-     user ? navigate("/createPost") : alert("You have to login to create your blog.");
-     return;
-    }
+    const ref = useRef(null);
+    const {hideHeading} = props;
+    const { scrollYProgress } = useScroll({
+        target:ref,
+        offset:["start start", "end start"]
+    })
+    const backgroundY = useTransform(scrollYProgress, [0,1],["0%","150%"]);
+   
+    
     return (
-        <div className='h-container'>
-            <div className="header">
+        <div className='h-container' ref={ref}>
+            <div className="header" >
                 <div className="h-top">
                     <div className="h-top-left" onClick={() => navigate("/")}>
                         
@@ -40,27 +42,15 @@ export default function Header(props) {
                         }
                     </div>
                 </div>
-            </div>
-            {!hideNewPostSection && <div className='noNewPost'>
-                <div className='noPost-postSection' >
-                    <img src={`https://avatar.iran.liara.run/username?username=${user + user}`} alt="loading" />
-                    <div className='newPostUpdater' onClick={createPost}>Create Your New Blog...</div>
-                </div>
-                <div className='noPost-infoSection'>
-                    <div className='infoItem'>
-                        <img src={multimediaImge} />
-                        <span>Images</span>
-                    </div>
-                    <div className='infoItem'>
-                        <img src={documentImage} />
-                        <span>Documents</span>
-                    </div>
-                    <div className='infoItem'>
-                        <img src={articleImag} />
-                        <span>Ariticles</span>
-                    </div>
-                </div>
-            </div>}
+                
+                {!hideHeading && <motion.div className="heading" style={{
+                    y:backgroundY
+                }}>
+                    <div> Stories That </div>
+                    <div>Spark Conversations</div>
+                </motion.div>}
+                
+            </div>  
         </div>
     )
 }

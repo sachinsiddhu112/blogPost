@@ -11,6 +11,7 @@ import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Footer from '../../components/footer/Footer';
 import Header from '../../components/header/Header';
+import { likePost, commentPost, deletePost, editPost } from '../../utils/PostInteraction';
 
 export default function Post() {
   //variables.
@@ -39,123 +40,53 @@ export default function Post() {
   //loading the selectedPost .
   useEffect(() => {
     setLoadingPost(true);
-
     try {
       const fetchPost = async () => {
         const response = await axios.get(`https://blog-post-backend.vercel.app/post/${id}`);
         setSelectedPost(response.data);
         setLoadingPost(false)
       }
-
       fetchPost();
     }
     catch (error) {
       alert(error.response.data.error);
     }
 
-  }, [])
+  }, [likePost, commentPost,editPost])
 
-
-  //function for adding the like on blog.
-  const likePost = async () => {
-    try {
-      const response = await axios.post(`https://blog-post-backend.vercel.app/post/likeOnPost/${id}`, {}, {
-        headers: {
-          'authToken': JSON.parse(sessionStorage.getItem('authToken'))
-        }
-      })
-      setLikedOnPost(false);
-      setSelectedPost(response.data)
-      return;
-    }
-    catch (error) {
-      console.log("Error in like", error)
-      alert(error.response.data.error);
-    }
-  }
+//for liking on current post.
+const handleLike = async () => {
+  const newPost = await likePost({id});
+  setSelectedPost(newPost);
+}
 
   //for commenting on the current post.
-  const commentPost = async () => {
+  const handleComment = async () => {
+    setCommentedOnPost(false)
     setCommentLoading(true);
-    const formData = new FormData();
-    formData.append('comment', comment);
-    try {
-      const response = await axios.post(`https://blog-post-backend.vercel.app/post/commentOnPost/${id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'authToken': JSON.parse(sessionStorage.getItem('authToken'))
-        }
-      })
-      setCommentedOnPost(false);
-      setComment("");
-      setSelectedPost(response.data)
-      setCommentLoading(false);
-      return;
-    }
-    catch (error) {
-      console.log("Error in like", error)
-      setCommentLoading(false)
-      setCommentedOnPost(false);
-      setComment("");
-      alert(error.response.data.error);
-    }
-  }
+    const newPost = await commentPost({ comment, id });
+    setComment("");
+    setCommentLoading(false);
+    setSelectedPost(newPost)
 
- 
-  
+  }
   //for deleting the post.
-  const deletePost = async () => {
-    try {
-      const res = await axios.delete(`https://blog-post-backend.vercel.app/post/delete/${id}`, {
-        headers: {
-          'authToken': JSON.parse(sessionStorage.getItem('authToken'))
-        }
-      })
-      alert("Delete operation successfull.")
-      navigate("/");
-    }
-    catch (error) {
-      console.log(error);
-      alert(error.response.data.error)
-    }
+  const handleDeletePost = async () => {
+    await deletePost({ id })
+    navigate("/");
   }
-
   //handeling the file for updating the file in blog.
   const handlefile = (e) => {
     setFile(e.target.files[0]);
   }
   //updating the blog.
-  const editPost = async () => {
-    //if no input no need to send request for updation to backend.
-    if (!postTopic && !postDescription && !file) {
-      alert("You should give some input to update post");
-      return;
-    }
-    try {
-      setLoadingPost(true)
-      const formData = new FormData();
-      if (postTopic) formData.append('topic', postTopic);
-      if (postDescription) formData.append('description', postDescription);
-      if (file) formData.append('file', file);
-      const res = await axios.put(`https://blog-post-backend.vercel.app/post/update/${id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'authToken': JSON.parse(sessionStorage.getItem('authToken'))
-        }
-      })
-      if (res.status != 200) {
-        alert("Update operation failed");
-      }
-      setSelectedPost(res.data);
-      setEditingPost(false);
-      setLoadingPost(false)
-    }
-    catch (error) {
-      console.log(error);
-      alert(error.response.data.error)
-    }
+  const handleEditPost = async () => {
+    setLoadingPost(true);
+   const newPost =  await editPost({postTopic, postDescription,file,id});
+    setEditingPost(false);
+    setLoadingPost(false)
+    setSelectedPost(newPost)
   }
-
   //function to render the file on web page.
   const renderFile = (file) => {
     const base64Data = `data:${file.contentType};base64,${file.base64}`;
@@ -178,7 +109,12 @@ export default function Post() {
 
   return (
     <div className='container'>
-      <Header hideNewPostSection={true} />
+      <div style={{
+        height:"30vh",
+        width:"100%"
+      }}>
+      <Header hideHeading={true} />
+      </div>
       <div>
         {loadingPost ?
           <BallTriangle
@@ -201,9 +137,9 @@ export default function Post() {
                       <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${selectedPost.user + selectedPost.user}`} alt='owner' />
                       <span className='user-name'>{selectedPost.user}</span>
                     </div>
-                    { user == selectedPost.user && <div className="p-edit-remove">
+                    {user == selectedPost.user && <div className="p-edit-remove">
                       <span onClick={() => setEditingPost(true)}><FiEdit size={20} /></span>
-                      <span onClick={deletePost}>< RiDeleteBin6Line size={20} /></span>
+                      <span onClick={handleDeletePost}>< RiDeleteBin6Line size={20} /></span>
                     </div>}
                   </div>
                   <span className='tag'>{selectedPost.topic}</span>
@@ -218,14 +154,8 @@ export default function Post() {
                     <div className='p-like-comment'>
                       <div className='p-like'>
                         <span >{!selectedPost.likes?.includes(user) ?
-                          <BiLike size={27} onClick={() => {
-                            setLikedOnPost(true)
-                            likePost()
-                          }} /> :
-                          <BiSolidLike size={27} onClick={() => {
-                            setLikedOnPost(true);
-                            likePost();
-                          }} />
+                          <BiLike size={27} onClick={handleLike} /> :
+                          <BiSolidLike size={27} onClick={handleLike} />
                         }</span>
                         <span>{selectedPost.likes.length}</span>
                       </div>
@@ -242,9 +172,7 @@ export default function Post() {
                             backgroundColor="#F4442E"
                           /> :
                           <span >{<FaRegCommentDots size={25}
-                            onClick={() => {
-                              setCommentedOnPost(true);
-                            }} />}</span>
+                            onClick={() => setCommentedOnPost(true)} />}</span>
                         }
                         <span>{selectedPost.comments.length}</span>
                       </div>
@@ -253,10 +181,7 @@ export default function Post() {
                     <div className='comment'>
                       <h3>Add Comment</h3>
                       <textarea type="text" className='comment-input' value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
-                      <button className='add-comment-btn' onClick={() => {
-                        setCommentedOnPost(false);
-                        commentPost();
-                      }}>Post</button>
+                      <button className='add-comment-btn' onClick={handleComment}>Post</button>
                       <button className='cancel-comment-btn' onClick={() => setCommentedOnPost(false)}>Cancel</button>
                     </div>
                   }
@@ -279,7 +204,7 @@ export default function Post() {
                     <input type='file' className='file-input' onChange={handlefile} placeholder='no file' >
                     </input>
                   </div>
-                  <button onClick={editPost} className='btn'>Post</button>
+                  <button onClick={handleEditPost} className='btn'>Post</button>
                   <button className='btn' onClick={() => setEditingPost(false)} >Cancel</button>
                 </div>
               </div>

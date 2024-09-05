@@ -7,12 +7,72 @@
     align-items: center;
     width: 100%;
     max-width: 2400px;
-    
-    background-color:black;
     position: relative;
     top: 190px;
    
 }
+
+.noNewPost {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: -100px;
+    gap: 40px;
+    background-color: #e5e5e5;
+    width: 100%;
+    max-width: 500px;
+    height: 170px;
+    padding: 15px 5px;
+}
+
+.noPost-postSection {
+    display: flex;
+    gap: 10px;
+}
+
+.noPost-postSection img {
+    width: 60px;
+    height: 60px;
+}
+
+.newPostUpdater {
+    width: 300px;
+    height: fit-content;
+    border: 1px solid orange;
+    border-radius: 10px;
+    padding: 20px 10px;
+    cursor: pointer;
+}
+
+.noPost-infoSection {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.infoItem {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.infoItem img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.infoItem span {
+    margin-top: 4px;
+}
+
+
 .search-post{
     display: flex;
     width: 100%;
@@ -170,9 +230,27 @@ max-width: 600px;
    .all-posts-post{
     max-width: 500px;
    }
+   .noNewPost {
+    max-width: 400px;
+}
+
+.newPostUpdater {
+    max-width: 190px;
+    padding: 10px 5px;
+    margin-top: 10px;
+}
+
     
 }
 @media  screen and (max-width:560px) {
+    .noPost-infoSection {
+        display: none;
+    }
+
+    .noNewPost {
+        width: fit-content;
+        height: fit-content;
+    }
     .post-container{
         top: 200px;
     }

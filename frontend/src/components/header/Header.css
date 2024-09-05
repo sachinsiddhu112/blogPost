@@ -1,26 +1,28 @@
 .h-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    background-size: cover;
     align-items: center;
     width: 100%;
     max-width: 2400px;
-    background-color: #6c757d;
+    height: 100vh;
     z-index: 0;
 }
 
 .header {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
-    align-items: center;
     width: 100%;
     margin-top: 10px;
+    
 }
 
 .h-top {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    z-index: 100;
 }
 
 .h-top-left {
@@ -36,10 +38,10 @@
 
 .title {
     margin-top: 8px;
-    font-family: "Rubik Moonrocks", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 25px;
+    color: white;
 }
 
 .h-top-right {
@@ -49,7 +51,7 @@
     width: fit-content;
     padding: 7px 7px;
     gap: 20px;
-    
+
 }
 
 .not-user {
@@ -62,10 +64,11 @@
     width: 120px;
     height: 40px;
     font-size: 20px;
+    color: white;
     border-radius: 10px;
     cursor: pointer;
-    border: none;
-    background-color: #ced4da;
+    border: 1px solid white;
+    background-color: transparent;
 }
 
 .user {
@@ -99,100 +102,41 @@
     border-radius: 10px;
     background-color: white;
 }
-
-.noNewPost {
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
+.background-1{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    height: 100vh;
+   width: 100%;
+    background-size: cover;
+}
+.background-2{
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    
+   
+}
+.heading {
     position: relative;
     top: 100px;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    background-color: #e5e5e5;
-    width: 100%;
-    max-width: 500px;
-    height: 170px;
-    padding: 15px 5px;
-}
-
-.noPost-postSection {
-    display: flex;
-    gap: 10px;
-}
-
-.noPost-postSection img {
-    width: 60px;
-    height: 60px;
-}
-
-.newPostUpdater {
-    width: 300px;
-    height: fit-content;
-    border: 1px solid orange;
-    border-radius: 10px;
-    padding: 20px 10px;
-    cursor: pointer;
-}
-
-.noPost-infoSection {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    max-width: 400px;
-}
-
-.infoItem {
-    display: flex;
-    gap: 10px;
-    width: fit-content;
-    height: fit-content;
-}
-
-.infoItem img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-}
-
-.infoItem span {
-    margin-top: 4px;
+    font-size: 80px;
+    color: white;
+    text-shadow: 0px 0px 10px black;
+    z-index: 15;
+    
 }
 
 
-@media screen and (max-width:600px) {
-    .noNewPost {
-        max-width: 400px;
-    }
-
-    .newPostUpdater {
-        max-width: 190px;
-        padding: 10px 5px;
-        margin-top: 10px;
-    }
-
-}
 
 @media screen and (max-width:500px) {
-    .noPost-infoSection {
-        display: none;
-    }
-
-    .noNewPost {
-        width: fit-content;
-        height: fit-content;
-    }
-
-
-
     .title {
         font-weight: 300;
         font-style: normal;
         font-size: 15px;
-    }
-    .user{
-
     }
 
     .circle {
@@ -200,7 +144,6 @@
         height: 40px;
         position: relative;
         left: -10px;
-       
     }
 
     .user-username {
@@ -217,6 +160,11 @@
         z-index: 1;
         border-radius: 10px;
         background-color: white;
+
+    }
+    .heading{
+        font-size: 60px;
+        top: 150px;
 
     }
 }
