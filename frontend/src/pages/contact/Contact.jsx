@@ -10,8 +10,8 @@ export default function Contact() {
             <div className="contact-header">
                 <span className='contact-title'>CONTACT US</span>
                 <span className='contact-headline'>Lets Start a Conversation.</span>
-                <span className='contact-desc'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero nam iure et </span>
-                <span className="contact-desc">nihil facere cumque sint magni doloremque!</span>
+                <span className='contact-desc'>Have any questions or need assistance? Feel free to reach out  </span>
+                <span className="contact-desc">to us! We're here to help with any inquiries or feedback you may have.</span>
             </div>
             <div className="contact-info">
                 <div className="ci-left">

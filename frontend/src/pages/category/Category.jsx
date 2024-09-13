@@ -42,7 +42,10 @@ export default function Category() {
                     <div className="header-heading">
                         {category.toUpperCase()}
                     </div>
-                    <div className="header-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae reprehenderit unde ipsa commodi velit! Nemo, hic ab. Cupiditate expedita molestias, ipsam, nostrum ad quibusdam reprehenderit velit quos, amet dolorum facere!
+                    <div className="header-desc">
+                        <div>Welcome to our category page!</div> 
+                        <div>Here, you'll find a curated selection of  tailored content   </div>
+                        <div>  Browse through our collection to discover insightful articles, tips, and resources. </div>
                     </div>
                     <div className="header-route">
                         <span className='item-a'>BLOG</span>

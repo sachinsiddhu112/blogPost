@@ -14,11 +14,13 @@
     align-items: center;
     gap: 15px;
     position: relative;
-    
+    background-color: #e5e5e5;
+    box-shadow: 2px 2px 2px #adb5bd ;
     z-index: 1;
     border-radius: 10px;
     width: 100%;
     max-width: 700px;
+    padding-bottom: 10px;
     
 }
 .s-container::before {

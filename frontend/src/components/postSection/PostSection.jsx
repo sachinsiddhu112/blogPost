@@ -7,6 +7,7 @@ import sports from "../../assets/sports.png";
 import lifestyle from "../../assets/lifstyle.png";
 import technology from "../../assets/technology.png";
 import storyBg from "../../assets/story-bg.png";
+import { useNavigate } from 'react-router-dom';
 export default function PostSection() {
     const [featuredPost, setFeaturedPost] = useState({
         user: 'SachinSiddhu',
@@ -17,6 +18,7 @@ export default function PostSection() {
         contentType: "image",
         base64: "",
     })
+    const navigate = useNavigate();
     const date = new Date();
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     const formattedDate = date.toLocaleDateString('en-US', options);
@@ -68,14 +70,14 @@ export default function PostSection() {
                     </div>
                     <div className='post-topic'>{featuredPost.topic}</div>
                     <span className='fp-desc'>{featuredPost.description.substring(0, 100)}</span>
-                    <button className='fp-btn'>Read More{" >"}</button>
+                    <button className='fp-btn' onClick={() => navigate(`/post/${featuredPost._id}`)}>Read More{" >"}</button>
                 </div>
                 <div className="right-section">
                     <h2>All Posts</h2>
                     <div className="all-posts">
                         {
                             posts.map((post) => (
-                                <div className="single-post">
+                                <div className="single-post" key={post._id}>
                                     <div>
                                         <span>By</span>
                                         <span className='sp-post-user'>
@@ -83,7 +85,8 @@ export default function PostSection() {
                                         <span className='sp-post-date'> {"| "}{post?.date?.toLocaleDateString('en-US', options) ||
                                             date.toLocaleDateString('en-US', options)}</span>
                                     </div>
-                                    <div className='sp-post-headline'>{post.topic}</div>
+                                    <div className='sp-post-headline' onClick={() =>
+                                         navigate(`/post/${post._id}`)}>{post.topic}</div>
 
                                 </div>
                             ))
@@ -101,17 +104,14 @@ export default function PostSection() {
                     <div className="cs-left">
                         <span className='cs-heading'>ABOUT US</span>
                         <div className='cs-left-headline'>We are community of content writers who share their learnings.</div>
-                        <div>fugit ipsam? Officia eveniet quibusdam ullam tempora ducimus sequi?
-                            Facere, eaque vel deleniti obcaecati id facilis, quis quas delectus expedita animi natus asperiores culpa, ratione harum iste eveniet maxime rerum quibusdam ullam? Autem tenetur error, iste sint dicta perspiciatis.
+                        <div>We are a vibrant community of content writers who come together to share our learnings and experiences. Through collaboration and knowledge exchange, we aim to uplift one another, improve our craft, and inspire creative growth. Whether you're a seasoned writer or just starting out, our community fosters a supportive environment where everyone can learn, contribute, and thrive.
                         </div>
-                        <span>Read More {" >"}</span>
+                        <span className='readmore'>Read More {" >"}</span>
                     </div>
                     <div className="cs-right">
                         <span className='cs-heading'>OUR MISSION</span>
                         <div className='cs-right-headline'>Creating valuable content for creatives all around world.</div>
-                        <div>fugit ipsam? Officia eveniet quibusdam ullam tempora ducimus sequi?
-                            Facere, eaque vel deleniti obcaecati id facilis, quis quas delectus expedita animi natus asperiores culpa, ratione harum iste eveniet maxime rerum quibusdam ullam? Autem tenetur error, iste sint dicta perspiciatis.
-                            Quibusdam quod, provident aliquam expedita, aut rerum doloribus quae </div>
+                        <div>We are dedicated to creating valuable content for creatives across the globe. Our goal is to inspire, educate, and empower artists, designers, and creators by providing insightful resources, tips, and stories. Whether through tutorials, guides, or inspirational pieces, we strive to fuel the creative journeys of individuals everywhere, helping them unlock their full potential.</div>
                     </div>
                 </div>
             </div>

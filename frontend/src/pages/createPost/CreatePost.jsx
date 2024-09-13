@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./CreatePost.css"
+import Navbar from '../../components/navbar/Navbar';
 export default function CreatePost() {
     //variables.
     const [file, setFile] = useState(null);
@@ -43,6 +44,7 @@ export default function CreatePost() {
 
     return (
         <div className='create-post-section'>
+            <Navbar/>
             <div className='inputs'>
                 <div className='topic inputItem'>
                     <label className='t-label'>Topic</label>

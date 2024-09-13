@@ -18,7 +18,8 @@
     width: 100%;
     position: relative;
     max-width: 600px;
-  
+    background-color: #e5e5e5;
+    box-shadow: 2px 2px 2px #adb5bd ;
     border-radius: 10px;
     z-index: 1;
     

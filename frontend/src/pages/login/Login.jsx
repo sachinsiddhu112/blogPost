@@ -25,7 +25,7 @@ export default function Login() {
             sessionStorage.setItem("user", JSON.stringify(response.data.user.username));//setting user in localStorage
             setAuthToken(response.data.authToken);//setting authToken in authContext
             sessionStorage.setItem('authToken', JSON.stringify(response.data.authToken));//settting authToken in localStorage.
-            navigate("/");
+            navigate("/createPost");
         }
         catch (error) {
             console.log("Error in login in", error);
@@ -38,15 +38,11 @@ export default function Login() {
                 <h1 className=''>Login</h1>
                 <form onSubmit={handleSubmit} className='input-form'>
                     <div className='formItem'>
-                        <label className='username-label'>
-                            <span className=''>Username</span>
-                        </label>
-                        <input type='text' placeholder='Enter Username' className='username input' defaultValue={username} onChange={(e) => setUsername(e.target.value)} />
+                        
+                        <input type='text' placeholder='Username' className='username input' defaultValue={username} onChange={(e) => setUsername(e.target.value)} />
                     </div>
                     <div className='formItem'>
-                        <label className='formItem'>
-                            <span className='passward-label'>Password</span>
-                        </label>
+                       
                         <input type='password' placeholder='Password' className='password input' defaultValue={password}
                             onChange={(e) => setPassword(e.target.value)} />
                     </div>

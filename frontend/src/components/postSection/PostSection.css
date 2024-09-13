@@ -124,7 +124,12 @@ cursor: pointer;
     font-size: 27px;
     font-weight: 600;
 }
-
+.readmore{
+    width: fit-content;
+    height: fit-content;
+    padding: 15px 15px;
+    background-color: #FFD050;
+}
 .cs-right{
     flex: 1;
     display: flex;

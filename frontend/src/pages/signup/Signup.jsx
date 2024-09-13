@@ -38,7 +38,7 @@ export default function SignUp() {
             sessionStorage.setItem('user', JSON.stringify((response.data.response.username)));//setting the user in localstorage.
             setAuthToken(response.data.authToken);//settting the authToken in context
             sessionStorage.setItem('authToken', JSON.stringify((response.data.authToken)));//settting the authToken in localStorage.
-            navigate("/");
+            navigate("/createPost");
         }
         catch (error) {
             console.log("error in signup", error);
@@ -51,27 +51,19 @@ export default function SignUp() {
                 <h1>Sign Up</h1>
                 <form className='form'>
                     <div className='inputItem'>
-                        <label className=''>
-                            <span className=''>Username</span>
-                        </label>
+                       
                         <input type='text' placeholder='Unique Username' className='s-input' value={inputs.username} onChange={(e) => setInputs({ ...inputs, username: e.target.value })} />
                     </div>
                     <div className='inputItem'>
-                        <label className=''>
-                            <span className=''>Email</span>
-                        </label>
+                       
                         <input type='email' placeholder='Unique Email' className='s-input' value={inputs.email} onChange={(e) => setInputs({ ...inputs, email: e.target.value })} />
                     </div>
                     <div className='inputItem'>
-                        <label className=''>
-                            <span className=''>Password</span>
-                        </label>
+                        
                         <input type='password' placeholder='Your Password' className='s-input' value={inputs.password} onChange={(e) => setInputs({ ...inputs, password: e.target.value })} />
                     </div>
                     <div className='inputItem'>
-                        <label className=''>
-                            <span className=''>Confirm Password</span>
-                        </label>
+                       
                         <input type='password' placeholder='Confirm Password' className='s-input' value={inputs.confirmPassword} onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })} />
                     </div>
                     <Link to='/login' className='link-to-login'>Already have an account</Link>
