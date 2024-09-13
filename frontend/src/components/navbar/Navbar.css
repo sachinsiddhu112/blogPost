@@ -1,0 +1,52 @@
+
+.h-top {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 100;
+    background-color: #232536;
+    padding: 10px 0px;
+    margin-top: -10px;
+}
+
+.h-top-left {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    padding: 8px 8px;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+
+
+.title {
+    margin-top: 8px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 25px;
+    color: white;
+}
+
+.h-top-right {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 7px 7px;
+    gap: 20px;
+    color: white;
+}
+.link{
+    text-decoration: none;
+    color: white;
+}
+.subscribe-btn{
+    background-color: white;
+    color: black;
+    width: 150px;
+    height: 40px;
+    border: none;
+    padding: 10px 10px;
+}

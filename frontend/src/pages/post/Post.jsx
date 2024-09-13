@@ -1,122 +1,66 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
-import { useParams, useNavigate } from "react-router-dom";
-import { authContext } from '../../context/authContext';
-import { Comment, BallTriangle } from 'react-loader-spinner';
-import "./Post.css";
-
-import { FaRegCommentDots } from "react-icons/fa";
-import { BiLike, BiSolidLike } from "react-icons/bi";
-import { FiEdit } from "react-icons/fi";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { useScroll } from 'framer-motion';
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { BallTriangle } from 'react-loader-spinner';
+import business from "../../assets/business.png";
+import sports from "../../assets/sports.png";
+import lifestyle from "../../assets/lifstyle.png";
+import technology from "../../assets/technology.png";
+import "./Post.css"
+import Navbar from '../../components/navbar/Navbar';
 import Footer from '../../components/footer/Footer';
-import Header from '../../components/header/Header';
-import { likePost, commentPost, deletePost, editPost } from '../../utils/PostInteraction';
-
 export default function Post() {
-  //variables.
   const { id } = useParams();
-  const { user } = useContext(authContext);
-  const [commentedOnPost, setCommentedOnPost] = useState(false);
-  const [likedOnPost, setLikedOnPost] = useState(false);
-  const [comment, setComment] = useState("");
-  const [file, setFile] = useState(null);
-  const [postDescription, setPostDescription] = useState("");
-  const [postTopic, setPostTopic] = useState("");
+  const [postId, setPostId] = useState(id);
+  const { category } = useLocation();
   const navigate = useNavigate();
-  const [editingPost, setEditingPost] = useState(false);
-  const [commentLoading, setCommentLoading] = useState(false);
-  const [loadingPost, setLoadingPost] = useState(false);
-  const [selectedPost, setSelectedPost] = useState({
+  const [postCatIcon, setPostCatIcon] = useState(business);
+  const options = { month: 'short', day: 'numeric', year: 'numeric' };
+  const [loading, setLoading] = useState(false);
+  const [postsNextToRead, setPostsNextToRead] = useState([]);
+  const [post, setPost] = useState({
     user: 'SachinSiddhu',
     topic: "general",
     description: "",
     comments: [],
     likes: [],
+    category: "",
     contentType: "image",
     base64: "",
-  });
-
-  //loading the selectedPost .
+  })
   useEffect(() => {
-    setLoadingPost(true);
-    try {
-      const fetchPost = async () => {
-        const response = await axios.get(`https://blog-post-backend.vercel.app/post/${id}`);
-        setSelectedPost(response.data);
-        setLoadingPost(false)
+    const fetchAllfiles = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_HOST}/post/${postId}`);
+        const response2 = await axios.get(`${process.env.REACT_APP_HOST}/post/allPosts?limit=3`)
+        setPost(response.data)
+        setPostsNextToRead(response2.data);
+        response.data.category == 'sports' ?
+          setPostCatIcon(sports) :
+          response.data.category == 'technology' ?
+            setPostCatIcon(technology) :
+            response.data.category == 'business' ?
+              setPostCatIcon(business) :
+              setPostCatIcon(lifestyle);
       }
-      fetchPost();
-    }
-    catch (error) {
-      alert(error.response.data.error);
-    }
-
-  }, [likePost, commentPost,editPost])
-
-//for liking on current post.
-const handleLike = async () => {
-  const newPost = await likePost({id});
-  setSelectedPost(newPost);
-}
-
-  //for commenting on the current post.
-  const handleComment = async () => {
-    setCommentedOnPost(false)
-    setCommentLoading(true);
-    const newPost = await commentPost({ comment, id });
-    setComment("");
-    setCommentLoading(false);
-    setSelectedPost(newPost)
-
-  }
-  //for deleting the post.
-  const handleDeletePost = async () => {
-    await deletePost({ id })
-    navigate("/");
-  }
-  //handeling the file for updating the file in blog.
-  const handlefile = (e) => {
-    setFile(e.target.files[0]);
-  }
-  //updating the blog.
-  const handleEditPost = async () => {
-    setLoadingPost(true);
-   const newPost =  await editPost({postTopic, postDescription,file,id});
-    setEditingPost(false);
-    setLoadingPost(false)
-    setSelectedPost(newPost)
-  }
-  //function to render the file on web page.
-  const renderFile = (file) => {
-    const base64Data = `data:${file.contentType};base64,${file.base64}`;
-    if (file.contentType.startsWith('image/')) {
-      //file type file
-      return <img src={base64Data} alt={file.name} className='p-left-file' />;
-    }
-    else if (file.contentType.startsWith('video/')) {
-      //file type video
-      return <video controls src={base64Data} className='p-left-file' />;
-    }
-    else if (file.contentType === 'application/pdf') {
-      //file type pdf document.
-      return (
-        <embed src={base64Data} type="application/pdf" width="100%" height="600px" />
-      );
-    }
-
-  }
-
+      catch (error) {
+        console.error('Error fetching files:', error);
+        alert(error)
+      }
+      finally {
+        setLoading(false);
+      }
+    };
+    fetchAllfiles();
+  }, [postId])
+  console.log(postsNextToRead)
   return (
     <div className='container'>
-      <div style={{
-        height:"30vh",
-        width:"100%"
-      }}>
-      <Header hideHeading={true} />
-      </div>
-      <div>
-        {loadingPost ?
+      <Navbar />
+      {loading ?
+        <div className="loader">
           <BallTriangle
             height={200}
             width={100}
@@ -127,91 +71,54 @@ const handleLike = async () => {
             wrapperClass=""
             visible={true}
           />
-          :
-          <>
-            {!editingPost ?
-              <div className='post'>
-                <div className="p-left">
-                  <div className="p-left-top">
-                    <div className='user-details'>
-                      <img className="user-pic" src={`https://avatar.iran.liara.run/username?username=${selectedPost.user + selectedPost.user}`} alt='owner' />
-                      <span className='user-name'>{selectedPost.user}</span>
-                    </div>
-                    {user == selectedPost.user && <div className="p-edit-remove">
-                      <span onClick={() => setEditingPost(true)}><FiEdit size={20} /></span>
-                      <span onClick={handleDeletePost}>< RiDeleteBin6Line size={20} /></span>
-                    </div>}
-                  </div>
-                  <span className='tag'>{selectedPost.topic}</span>
-                  <div className='file-container'
-                  >{renderFile(selectedPost)}</div>
+        </div> :
+        <div className='post-container'>
+          <div className="top-p-info">
+            <div className="user">
+              <img className='user-img' src={`https://avatar.iran.liara.run/public/boy?username=${post.user}`} alt='USER' />
+              <div className='name-date'>
+                <div className="name">
+                  {post.user}
                 </div>
-                <div className="p-right">
-                  <div className='p-right-description'>
-                    {selectedPost.description}
-                  </div>
-                  {!commentedOnPost ?
-                    <div className='p-like-comment'>
-                      <div className='p-like'>
-                        <span >{!selectedPost.likes?.includes(user) ?
-                          <BiLike size={27} onClick={handleLike} /> :
-                          <BiSolidLike size={27} onClick={handleLike} />
-                        }</span>
-                        <span>{selectedPost.likes.length}</span>
-                      </div>
-                      <div className="p-comment">
-                        {commentLoading ?
-                          <Comment
-                            visible={true}
-                            height="40"
-                            width="40"
-                            ariaLabel="comment-loading"
-                            wrapperStyle={{}}
-                            wrapperClass="comment-wrapper"
-                            color="#fff"
-                            backgroundColor="#F4442E"
-                          /> :
-                          <span >{<FaRegCommentDots size={25}
-                            onClick={() => setCommentedOnPost(true)} />}</span>
-                        }
-                        <span>{selectedPost.comments.length}</span>
-                      </div>
-                    </div>
-                    :
-                    <div className='comment'>
-                      <h3>Add Comment</h3>
-                      <textarea type="text" className='comment-input' value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
-                      <button className='add-comment-btn' onClick={handleComment}>Post</button>
-                      <button className='cancel-comment-btn' onClick={() => setCommentedOnPost(false)}>Cancel</button>
-                    </div>
-                  }
-                </div>
+                <div className="date">{post?.date?.toLocaleDateString('en-US', options) ||
+                  new Date().toLocaleDateString('en-US', options)}</div>
               </div>
-              :
-              <div className="editpost-section">
-                <div className='inputs'>
-                  <div className='topic inputItem'>
-                    <label className='t-label'>Topic</label>
-                    <input type='text' className='topic-input' onChange={(e) => setPostTopic(e.target.value)} placeholder=' Blog topic' />
+            </div>
+            <div className="post-headline">
+              {post.topic}
+            </div>
+            <div className="post-category">
+              <img className='pc-icon' src={postCatIcon} alt="" />
+              <span > {post.category.toUpperCase()}</span>
+            </div>
+          </div>
+          <div className='middle-p-img'>
+            <img src={`data:${post.contentType};base64,${post.base64}`} alt={post.name} className='post-img' />
+          </div>
+          <div className="bottom-p-desc">
+            {post.description}
+          </div>
+          <div className="next-to-read">
+            <div className='ntr-headline' >What To Read Next:</div>
+            <div className="next-posts">
+              {postsNextToRead.length > 0 ?
+                postsNextToRead.map((post, ind) => (
+                  <div className="n-post" key={ind}>
+                    <img src={`data:${post.contentType};base64,${post.base64}`} alt={post.name} className='np-img' />
+                    <div className="np-headline" onClick={() => setPostId(post._id)}>
+                      {post.topic}:
+                    </div>
+                    <div className="np-desc">
+                      {post.description.substring(0, 50)}...
+                    </div>
                   </div>
-                  <div className='description inputItem'>
-
-                    <label className='d-label' >Description</label>
-                    <textarea type='text' className='description-input' onChange={(e) => setPostDescription(e.target.value)} placeholder='Blog content'></textarea>
-                  </div>
-                  <div className='file inputItem'>
-                    <label className='f-label'>File</label>
-                    <input type='file' className='file-input' onChange={handlefile} placeholder='no file' >
-                    </input>
-                  </div>
-                  <button onClick={handleEditPost} className='btn'>Post</button>
-                  <button className='btn' onClick={() => setEditingPost(false)} >Cancel</button>
-                </div>
-              </div>
-            }
-          </>}
-      </div>
-      <hr className='divider' />
+                ))
+                :
+                <h3>No Post.</h3>
+              }
+            </div>
+          </div>
+        </div>}
       <Footer />
     </div>
   )

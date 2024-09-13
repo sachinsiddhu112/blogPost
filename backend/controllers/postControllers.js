@@ -6,21 +6,47 @@ import User from "../models/authModel.js";
 //endpoint for providing all posts
 export const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find({}, 'username file.data file.contentType description topic likes comments');//finding all post with username file.data etc.
-    const list = posts.map(post => ({
-      //creating a list of posts suitable to render info on webpage on frontend.
-      _id: post._id,
-      user: post.username,
-      topic: post.topic || "general",
-      description: post.description,
-      comments: post.comments,
-      likes: post.likes,
-      contentType: post.file.contentType,
-      base64: Buffer.from(post.file.data).toString('base64'),
+    const {featured,limit,category} = req.query;
+    const limitValue = parseInt(limit, 10);
+
+    if(featured == 'true'){
+      const post = await Post.findOne({ featured: true });
+      const featuredPost = {
+         //creating a list of posts suitable to render info on webpage on frontend.
+         _id: post._id,
+         user: post.username,
+         topic: post.topic || "general",
+         description: post.description,
+         comments: post.comments,
+         likes: post.likes,
+         category:post.category,
+         featured:post.featured || false,
+         contentType: post.file.contentType,
+         base64: Buffer.from(post.file.data).toString('base64'),
+      }
+      res.status(200).json(featuredPost);
+      return;
     }
-    )
-    );
-    res.status(200).json(list);
+    else {
+      const querry = category? {category}:{};
+      querry._id =  { $ne: req.query.id };
+      const posts = await Post.find(querry, 'username file.data file.contentType description topic likes comments category').limit(limitValue ? limitValue : 0);
+      const list = posts.map(post => ({
+        //creating a list of posts suitable to render info on webpage on frontend.
+        _id: post._id,
+        user: post.username,
+        topic: post.topic || "general",
+        description: post.description,
+        comments: post.comments,
+        likes: post.likes,
+        category:post.category,
+        featured:post.featured || false,
+        contentType: post.file.contentType,
+        base64: Buffer.from(post.file.data).toString('base64'),
+      }));
+      res.status(200).json(list);
+    }
+    
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: "Server side error." })
@@ -43,6 +69,8 @@ export const getPost = async (req, res) => {
       topic: post.topic || "general",
       description: post.description,
       comments: post.comments,
+      featured:post.featured,
+      category:post.category,
       likes: post.likes,
       contentType: post.file.contentType,
       base64: Buffer.from(post.file.data).toString('base64'),
@@ -71,6 +99,7 @@ export const uploadPost = async (req, res) => {
       username: user.username,
       topic: req.body.topic,
       description: req.body.description,
+      category:req.body.category,
       file: {
         data: req.file.buffer,
         contentType: req.file.mimetype

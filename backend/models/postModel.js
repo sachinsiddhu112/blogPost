@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 const postSchema = new mongoose.Schema({
 
     username:{
-        type:String,
-        
+        type:String,  
     },
     topic:{
         type:String,
@@ -13,6 +12,14 @@ const postSchema = new mongoose.Schema({
     description:{
         type:String,
         default:"New post"
+    },
+    category:{
+        type:String,
+        requried:true
+    },
+    featured:{
+        type:String,
+        default:"false"
     },
     file: {
       data: Buffer,

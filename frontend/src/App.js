@@ -8,6 +8,9 @@ import CreatePost from "./pages/createPost/CreatePost.jsx";
 import Login from "./pages/login/Login.jsx";
 import Signup from "./pages/signup/Signup.jsx";
 import { AuthProvider } from "./context/authContext.js";
+import Posts from "./pages/posts/Posts.jsx";
+import Category from "./pages/category/Category.jsx";
+import Contact from "./pages/contact/Contact.jsx";
 
 function App() {
 
@@ -18,7 +21,10 @@ function App() {
         <Routes>
 
           <Route path="/" element={<Home />} />
+          <Route path = "/blogs" element={<Posts/>}/>
+          <Route path="/blogs/:category" element = {<Category/>} />
           <Route path="/post/:id" element={<Post />} />
+          <Route path="/contact" element = {<Contact/>} />
           <Route path="/createPost" element={<CreatePost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

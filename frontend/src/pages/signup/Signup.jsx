@@ -32,7 +32,7 @@ export default function SignUp() {
             return;
         }
         try {
-            const response = await axios.post("https://blog-post-backend.vercel.app/auth/signup", inputs);
+            const response = await axios.post(`${process.env.REACT_APP_HOST}/auth/signup`, inputs);
 
             setUser(response.data.response.username);//setting the user in context
             sessionStorage.setItem('user', JSON.stringify((response.data.response.username)));//setting the user in localstorage.

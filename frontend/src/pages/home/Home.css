@@ -1,25 +1,15 @@
 .home-container{
-   
     width: 100%;
     min-height: 100vh;
-    max-width: 130%;
-    padding-bottom: 40px;
-    background-image: url("../../assets/background-2.jpg");
+    max-width: 2400px;
+   
     
 }
+.content{
+    z-index: 99;
+}
 .footer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    top: 190px;
-    background-image: url("../../assets/background-2.jpg");
+    width: 100%;
 }
 
 
-@media  screen and (max-width:600px) {
-    .footer{
-        top: 190px;
-    }
-}
