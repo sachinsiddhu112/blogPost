@@ -57,11 +57,11 @@ export default function Category() {
                     <div className="category-posts">
                         {posts.length > 0 ?
                             posts.map((post, ind) => (
-                                <div className="cat-post">
+                                <div className="cat-post" key={ind}>
                                     <img src={`data:${post.contentType};base64,${post.base64}`} alt={post.name} className='cat-post-img' />
                                     <div className="post-details">
                                         <div className="pd-category">{post.category.toUpperCase()}</div>
-                                        <div className="pd-headline">{post.topic}</div>
+                                        <div className="pd-headline" onClick={() => navigate(`/post/${post._id}`)}>{post.topic}</div>
                                         <div className="pd-desc">{post.description.substring(0, 100)}</div>
                                     </div>
                                 </div>
