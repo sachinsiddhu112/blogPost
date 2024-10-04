@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState } from 'react'
+import { useQuery } from '@tanstack/react-query';
 import "./PostSection.css";
-import axios from 'axios';
+import truncate from 'html-truncate';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import business from "../../assets/business.png";
 import sports from "../../assets/sports.png";
@@ -8,85 +9,66 @@ import lifestyle from "../../assets/lifstyle.png";
 import technology from "../../assets/technology.png";
 import storyBg from "../../assets/story-bg.png";
 import { useNavigate } from 'react-router-dom';
+import Category from '../../pages/category/Category';
+import { fetchAllPost } from '../../utils/postUtilFunctions';
 export default function PostSection() {
-    const [featuredPost, setFeaturedPost] = useState({
-        user: 'SachinSiddhu',
-        topic: "general",
-        description: "",
-        comments: [],
-        likes: [],
-        contentType: "image",
-        base64: "",
-    })
+
     const navigate = useNavigate();
     const date = new Date();
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    const formattedDate = date.toLocaleDateString('en-US', options);
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [postBase64Data, setPostBase64Data] = useState("");
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start end", "center center"]
-    })
-    const scaleY = useTransform(scrollYProgress, [0, 1], [.3, 1]);
-
-
-    useEffect(() => {
-        try {
-            const fetchAllPost = async () => {
-                setLoading(true);
-                //fetching all posts.
-                const response = await axios.get(`${process.env.REACT_APP_HOST}/post/allPosts?limit=6`);
-                setPosts(response.data);
-                //fetching featured post.
-                const response2 = await axios.get(`${process.env.REACT_APP_HOST}/post/allPosts?featured=true`);
-                setFeaturedPost(response2.data);
-                const base64Data = `data:${response2.data.contentType};base64,${response2.data.base64}`;
-                setPostBase64Data(base64Data)
-                setLoading(false);
-            }
-
-            fetchAllPost();
-            //fetchFeaturedPost();
-        }
-        catch (error) {
-            alert(error.response.data.error);
-        }
-
-    }, [])
-    console.log(posts)
+    const {
+        status: status1,
+        error: error1,
+        data: posts
+    } = useQuery({
+        queryKey: ["posts"],
+        queryFn: () => fetchAllPost(`?limit=5`)
+    });
+    const {
+        status: status2,
+        error: error2,
+        data: featuredPost
+    } = useQuery({
+        queryKey: ["featuredPost"],
+        queryFn: () => fetchAllPost(`?featured=true`)
+    });
+    console.log(status1)
+    if (status1 === 'pending' || status2 === 'pending') return <h1>Loading...</h1>
+    if (status1 === 'error' || status2 === 'error') return <h1>Error happend in fetching data.</h1>
+    
     return (
         <div className=''>
-            {!loading && 
             <div className='ps-container' >
                 <div className="left-section">
                     <h2>Featured Post</h2>
-                    <img className='fp-img' src={postBase64Data} />
+                    <img className='fp-img' src={`data:${featuredPost.contentType};base64,${featuredPost.base64}`} />
                     <div className=''>
                         <span>By</span>
                         <span className='post-user'>{featuredPost.user}</span>
                     </div>
                     <div className='post-topic'>{featuredPost.topic}</div>
-                    <span className='fp-desc'>{featuredPost.description.substring(0, 100)}</span>
-                    <button className='fp-btn' onClick={() => navigate(`/post/${featuredPost._id}`)}>Read More{" >"}</button>
+
+                    <button className='fp-btn' onClick={() => navigate(`/post/${featuredPost._id}`,
+                        { state: { category: featuredPost.category } }
+                    )}>Read More{" >"}</button>
                 </div>
                 <div className="right-section">
                     <h2>All Posts</h2>
                     <div className="all-posts">
                         {
-                            posts.map((post) => (
+                            posts?.map((post) => (
                                 <div className="single-post" key={post._id}>
                                     <div>
                                         <span>By</span>
                                         <span className='sp-post-user'>
-                                            {post.user}</span>
+                                            {post?.user}</span>
                                         <span className='sp-post-date'> {"| "}{post?.date?.toLocaleDateString('en-US', options) ||
                                             date.toLocaleDateString('en-US', options)}</span>
                                     </div>
                                     <div className='sp-post-headline' onClick={() =>
-                                         navigate(`/post/${post._id}`)}>{post.topic}</div>
+                                        navigate(`/post/${post?._id}`
+                                            , { state: { category: post.category } }
+                                        )}>{post?.topic}</div>
 
                                 </div>
                             ))
@@ -94,7 +76,7 @@ export default function PostSection() {
                     </div>
                 </div>
 
-            </div>}
+            </div>
             <div className="about-us-section">
                 <div className="us-section-top">
                     <div className="orange-part"></div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import truncate from 'html-truncate';
 import { BallTriangle } from 'react-loader-spinner';
 import business from "../../assets/business.png";
 import sports from "../../assets/sports.png";
@@ -15,11 +16,12 @@ export default function Category() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
+    const url = `${process.env.REACT_APP_HOST}/post/allPosts`
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_HOST}/post/allPosts?category=${category}`);
+                const response = await axios.get(`${url}?category=${category}`);
                 setPosts(response.data);
             }
             catch (err) {
@@ -62,7 +64,8 @@ export default function Category() {
                                     <div className="post-details">
                                         <div className="pd-category">{post.category.toUpperCase()}</div>
                                         <div className="pd-headline" onClick={() => navigate(`/post/${post._id}`)}>{post.topic}</div>
-                                        <div className="pd-desc">{post.description.substring(0, 100)}</div>
+                                        <div className="pd-desc"
+                                         dangerouslySetInnerHTML={{ __html: truncate(post.description,100) }}></div>
                                     </div>
                                 </div>
                             ))

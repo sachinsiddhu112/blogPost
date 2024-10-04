@@ -20,7 +20,7 @@ export const getAllPosts = async (req, res) => {
          comments: post.comments,
          likes: post.likes,
          category:post.category,
-         featured:post.featured || false,
+         featured:post.featured || true,
          contentType: post.file.contentType,
          base64: Buffer.from(post.file.data).toString('base64'),
       }
@@ -99,7 +99,7 @@ export const uploadPost = async (req, res) => {
       username: user.username,
       topic: req.body.topic,
       description: req.body.description,
-      category:req.body.category,
+      category:req.body.category||'Business',
       file: {
         data: req.file.buffer,
         contentType: req.file.mimetype

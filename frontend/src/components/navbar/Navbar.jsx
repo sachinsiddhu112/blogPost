@@ -2,12 +2,14 @@ import React from 'react'
 import { useNavigate , Link} from 'react-router-dom';
 
 import "./Navbar.css"
-export default function Navbar() {
+import { color } from 'framer-motion';
+export default function Navbar({color}) {
     const navigate = useNavigate();
+    console.log(color)
   return (
-    
+      
       <div className="h-top">
-                    <div className="h-top-left" onClick={() => navigate("/")}>
+                    <div className={`h-top-left`}  onClick={() => navigate("/")}>
 
                         <span className='title'>BlogPost</span>
                     </div>

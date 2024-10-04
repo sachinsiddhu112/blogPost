@@ -1,6 +1,7 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import './App.css';
 import Home from './pages/home/Home.jsx';
 import Post from "./pages/post/Post.jsx";
@@ -11,15 +12,16 @@ import { AuthProvider } from "./context/authContext.js";
 import Posts from "./pages/posts/Posts.jsx";
 import Category from "./pages/category/Category.jsx";
 import Contact from "./pages/contact/Contact.jsx";
+import Alert from "./components/alert/Alert.jsx";
 
 function App() {
-
+  const queryClient = new QueryClient();
   return (
     <AuthProvider>
       <div className="custom" style={{height:"100%"}}>
       <BrowserRouter>
+      <QueryClientProvider client={ queryClient } >
         <Routes>
-
           <Route path="/" element={<Home />} />
           <Route path = "/blogs" element={<Posts/>}/>
           <Route path="/blogs/:category" element = {<Category/>} />
@@ -28,9 +30,10 @@ function App() {
           <Route path="/createPost" element={<CreatePost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-
+          <Route path="/alert" element = {<Alert/>} />
         </Routes>
-
+        <ReactQueryDevtools/>
+        </QueryClientProvider>
       </BrowserRouter>
       </div>
     </AuthProvider>

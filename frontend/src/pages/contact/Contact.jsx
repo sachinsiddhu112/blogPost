@@ -1,9 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import "./Contact.css";
 import Navbar from '../../components/navbar/Navbar';
 import Footer from '../../components/footer/Footer';
+import Alert from '../../components/alert/Alert';
 export default function Contact() {
+    const [alert, setAlert] = useState(false);
+    const [alertContent,setAlertContent] = useState({
+        alertHeadline:"",
+        alertMSG:""
+    })
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setAlert(true)
+        setAlertContent({
+            alertHeadline:"Successful Submission.",
+            alertMSG:"We got your querry.Till that use our chatbot for instant help"
+        })  
+    }
+    useEffect(() => {
+       const timeout = setTimeout(() => {
+        setAlert(false);
+       },4000)
+    return () => clearTimeout(timeout);
+    },[handleSubmit])
+    
+    console.log(alert)
     return (
         <div className='contact-container'>
             <Navbar />
@@ -27,13 +49,19 @@ export default function Contact() {
                     <span>1234567890</span>
                 </div>
             </div>
+            {
+                alert && 
+                <div className='alert'> 
+                <Alert setAlert={setAlert} alertContent = {alertContent} />
+                </div>
+            }
             <div className="contact-section">
                 <form className='contact-form' >
                     <input type='text' placeholder='Full Name' />
                     <input type='text' placeholder='Your Email' />
                     <input type = 'text' placeholder='Query Related To' />
-                    <textarea type = 'text' placeholder='Message' />
-                    <button type='submit' className='submit-btn' >Send Message</button>
+                    <textarea className='message-textarea' type = 'text' placeholder='Message' />
+                    <button type='submit' className='submit-btn' onClick={handleSubmit} >Send Message</button>
                 </form>
             </div>
             <Footer />

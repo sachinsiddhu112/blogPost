@@ -4,9 +4,10 @@
     justify-content: space-between;
     width: 100%;
     z-index: 100;
-    background-color: #232536;
+    background-color: transparent;
     padding: 10px 0px;
     margin-top: -10px;
+    color: white;
 }
 
 .h-top-left {
@@ -25,7 +26,7 @@
     font-weight: 400;
     font-style: normal;
     font-size: 25px;
-    color: white;
+    
 }
 
 .h-top-right {
@@ -36,11 +37,12 @@
     max-width: 500px;
     padding: 7px 7px;
     gap: 20px;
-    color: white;
+   
+    font-size: large;
 }
 .link{
     text-decoration: none;
-    color: white;
+   
 }
 .subscribe-btn{
     background-color: white;

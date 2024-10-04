@@ -23,7 +23,7 @@ export default function Header(props) {
         <div className='h-container' ref={ref}>
             <div className="header" >
                 
-                <Navbar/>
+                <Navbar color= 'white'/>
                 {!hideHeading &&
                     <div className="heading">
                         <div> Unveiling Stories,</div>
