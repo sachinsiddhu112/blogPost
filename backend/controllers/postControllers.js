@@ -2,35 +2,63 @@
 import { Buffer } from "buffer"
 import Post from "../models/postModel.js";
 import User from "../models/authModel.js";
-
+import client from "../caching/redis.js";
 //endpoint for providing all posts
 export const getAllPosts = async (req, res) => {
   try {
-    const {featured,limit,category} = req.query;
-    const limitValue = parseInt(limit, 10);
-
-    if(featured == 'true'){
-      const post = await Post.findOne({ featured: true });
-      const featuredPost = {
-         //creating a list of posts suitable to render info on webpage on frontend.
-         _id: post._id,
-         user: post.username,
-         topic: post.topic || "general",
-         description: post.description,
-         comments: post.comments,
-         likes: post.likes,
-         category:post.category,
-         featured:post.featured || true,
-         contentType: post.file.contentType,
-         base64: Buffer.from(post.file.data).toString('base64'),
+    const { featured, limit, category } = req.query;
+    const limitValue = parseInt(limit, 10) || 0;
+    if (featured == 'true') {
+      //for providing featured post.
+      const querry = { featured: true };
+      //hit cache.
+      const cachePost = await client.get(`featured`);
+      if (cachePost) {
+        const post = await JSON.parse(cachePost);
+        return res.status(200).json(post);
       }
-      res.status(200).json(featuredPost);
-      return;
+      //mis cache
+      const post = await Post.findOne(querry);
+      if (!post) {
+        return res.status(200).json({ message: "No Post." });
+      }
+      const featuredPost = {
+        //creating a list of posts suitable to render info on webpage on frontend.
+        _id: post._id,
+        user: post.username,
+        topic: post.topic || "general",
+        description: post.description,
+        comments: post.comments,
+        likes: post.likes,
+        category: post.category,
+        featured: post.featured || true,
+        contentType: post.file.contentType,
+        base64: Buffer.from(post.file.data).toString('base64'),
+      }
+      //in case of mis cache,store featured post in cache.
+      client.set(`featured`, JSON.stringify(featuredPost));
+      return res.status(200).json(featuredPost);
     }
     else {
-      const querry = category? {category}:{};
-      querry._id =  { $ne: req.query.id };
-      const posts = await Post.find(querry, 'username file.data file.contentType description topic likes comments category').limit(limitValue ? limitValue : 0);
+      console.log('cached all posts');
+      //no categroy means ,request for all posts.
+      //all posts from cache.
+      const cachedPosts = await client.get('posts');
+      if (cachedPosts != null) {//for cache hit.
+        const parsePosts = await JSON.parse(cachedPosts);
+        const data = limitValue != 0 ? parsePosts.slice(0, limitValue) : parsePosts;//for limited posts.
+        let result = [];
+        if (category) {
+          result = data.filter((post) => {
+            return post.category === category && (req.query.id ? req.query.id != post._id : true)
+          })
+          console.log(result.length)
+          return res.status(200).json(result);
+        }
+        console.log(data.length)
+        return res.status(200).json(data)
+      }
+      const posts = await Post.find();
       const list = posts.map(post => ({
         //creating a list of posts suitable to render info on webpage on frontend.
         _id: post._id,
@@ -39,20 +67,52 @@ export const getAllPosts = async (req, res) => {
         description: post.description,
         comments: post.comments,
         likes: post.likes,
-        category:post.category,
-        featured:post.featured || false,
+        category: post.category,
+        featured: post.featured || false,
         contentType: post.file.contentType,
         base64: Buffer.from(post.file.data).toString('base64'),
       }));
-      res.status(200).json(list);
+      //in case of mis cache,store all posts in cache.
+      client.set('posts', JSON.stringify(list));
+      const result = limitValue != 0 ? list.slice(0, limitValue) : list;
+      res.status(200).json(result);
     }
-    
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: "Server side error." })
   }
 }
+export const getAllPostsOfOneAuthor = async (req, res) => {
+  console.log('getting user psots');
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return res.status(401).json({ messaage: "Unauthorized access." })
+  }
+  const cachedPosts = await client.get(`posts:${user.username}`);
+  if (cachedPosts != null) {
+    console.log('cached')
+    const parse = await JSON.parse(cachedPosts);
+    return res.status(200).json(parse);
+  }
+  const querry = { username: user.username };
+  const posts = await Post.find(querry)
+  const list = posts.map(post => ({
+    //creating a list of posts suitable to render info on webpage on frontend.
+    _id: post._id,
+    user: post.username,
+    topic: post.topic || "general",
+    description: post.description,
+    comments: post.comments,
+    likes: post.likes,
+    category: post.category,
+    featured: post.featured || false,
+    contentType: post.file.contentType,
+    base64: Buffer.from(post.file.data).toString('base64'),
+  }));
+  client.set(`posts:${user.username}`,JSON.stringify(list));
+  res.status(200).json(list);
 
+}
 
 //endpoint to serve single post to user with the help of post id.
 export const getPost = async (req, res) => {
@@ -69,13 +129,12 @@ export const getPost = async (req, res) => {
       topic: post.topic || "general",
       description: post.description,
       comments: post.comments,
-      featured:post.featured,
-      category:post.category,
+      featured: post.featured,
+      category: post.category,
       likes: post.likes,
       contentType: post.file.contentType,
       base64: Buffer.from(post.file.data).toString('base64'),
     }
-
     res.status(200).json(selectedPost);
   }
   catch (error) {
@@ -99,13 +158,15 @@ export const uploadPost = async (req, res) => {
       username: user.username,
       topic: req.body.topic,
       description: req.body.description,
-      category:req.body.category||'Business',
+      category: req.body.category || 'Business',
       file: {
         data: req.file.buffer,
         contentType: req.file.mimetype
       }
     });
-    //saving new post in database
+    //saving new post in database and clear cache.
+    client.del('posts');
+    client.del(`posts:${user.username}`);
     const savedPost = await newPost.save();
     res.status(200).json(savedPost); // sending new post uploaded by user
   } catch (error) {
@@ -148,9 +209,9 @@ export const updatePost = async (req, res) => {
       contentType: savedPost.file.contentType,
       base64: Buffer.from(savedPost.file.data).toString('base64'),
     }
-    res.status(200).json(newPost);
-    return;
-
+    client.del('posts');
+    client.del(`posts:${user.username}`);
+    return res.status(200).json(newPost);
   }
   catch (error) {
     console.log("error in updating post", error);
@@ -171,8 +232,7 @@ export const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post) {
-      res.status(401).json({ error: "Blog don't exist" });
-      return;
+      return res.status(401).json({ error: "Blog don't exist" });
     }
     //checking the user is the owner of the blog post or not by using the username .
     if (post.username != user.username) {
@@ -180,6 +240,8 @@ export const deletePost = async (req, res) => {
       return;
     }
     await post.deleteOne();
+    client.del('posts');
+    client.del(`posts:${user.username}`);
     res.status(200).json("Successfully deleted the post.")
   }
   catch (error) {

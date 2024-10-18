@@ -8,6 +8,8 @@
     padding: 10px 0px;
     margin-top: -10px;
     color: white;
+    overflow: hidden;
+    background-color:black ;
 }
 
 .h-top-left {
@@ -48,7 +50,26 @@
     background-color: white;
     color: black;
     width: 150px;
-    height: 40px;
+    height: fit-content;
     border: none;
     padding: 10px 10px;
+}
+
+@media screen and (max-width:700px) {
+    .h-top-right{
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        width: 200px;
+        padding: 7px 7px;
+        gap: 20px;
+        font-size: large;
+        position: relative;
+        right: -500px;
+        
+    }
+    .toggle-menu{
+        transition-property: right 2 ease-in-out;
+        right:-50px
+    }
 }

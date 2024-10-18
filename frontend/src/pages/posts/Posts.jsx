@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useContext, useRef, useCallback } from 'react'
-import axios from 'axios';
+
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import truncate from 'html-truncate';
-import { FaRegCommentDots } from "react-icons/fa";//icons
-import { BiLike, BiSolidLike } from "react-icons/bi";
-import { BallTriangle } from 'react-loader-spinner';
 import business from "../../assets/business.png";
 import sports from "../../assets/sports.png";
 import lifestyle from "../../assets/lifstyle.png";
 import technology from "../../assets/technology.png";
+import { BallTriangle } from 'react-loader-spinner';
 import "./Posts.css"
 import Footer from "../../components/footer/Footer.jsx"
 import { authContext } from '../../context/authContext';//user context.
@@ -22,13 +19,23 @@ export default function Posts() {
     const ref = useRef(null);
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     const { user } = useContext(authContext)
+    const [mobileWindow, setMobileWindow] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+         window.innerWidth < 700 ? setMobileWindow(true) : setMobileWindow(false)
+        }
+        handleResize()
+        window.addEventListener('resize',handleResize)
+        return () => window.removeEventListener('resize',handleResize)
+    },[])
+
     const {
         status: status1,
         error: error1,
         data: allPostsData
     } = useQuery({
         queryKey: ["allPosts"],
-        queryFn:  () => fetchAllPost("")
+        queryFn:  () => fetchAllPost("/allPosts")
     });
     const {
         status: status2,
@@ -36,18 +43,27 @@ export default function Posts() {
         data: featuredPost
     } = useQuery({
         queryKey: ["featuredPost"],
-        queryFn: () => fetchAllPost(`?featured=true`)
+        queryFn: () => fetchAllPost(`/allPosts?featured=true`)
     });
-    if (status1 === 'pending' || status2 === 'pending') return <h1>Loading...</h1>
+    if (status1 === 'pending' || status2 === 'pending') return  <BallTriangle
+    height={200}
+    width={100}
+    radius={5}
+    color="#4fa94d"
+    ariaLabel="ball-triangle-loading"
+    wrapperStyle={{}}
+    wrapperClass=""
+    visible={true}
+  />
     if (status1 === 'error' || status2 === 'error') return <h1>Error happened in fetching data.</h1>
 
     return (
         <div className='posts-container' >
-            <Navbar color= 'black' />
+            <Navbar color= '#232536' />
             <div className="header-section">
                 <div className="featured-post">
                     <div className="featured-left">
-                        <span>FEATURED POST</span>
+                        <span style={{marginTop:'10px'}}>FEATURED POST</span>
                         <div className='featured-topic'>{featuredPost.topic}</div>
                         <div >
                             <span>By</span>
@@ -55,9 +71,9 @@ export default function Posts() {
                             <span className='post-date'> {"| "}{featuredPost?.date?.toLocaleDateString('en-US', options) ||
                                 new Date().toLocaleDateString('en-US', options)}</span>
                         </div>
-                        <div className="featured-desc"
+                       {!mobileWindow && <div className="featured-desc"
                             dangerouslySetInnerHTML={{ __html: truncate(featuredPost.description, 200) }}>
-                        </div>
+                        </div>}
                         <button className='featured-btn'
                             onClick={() => navigate(`/post/${featuredPost._id}`,
                                 { state: { category: featuredPost.category } }
@@ -73,15 +89,15 @@ export default function Posts() {
                 <div className="ps-posts">
                     {allPostsData.length > 0 ?
                         allPostsData.map((post, ind) => (
-                            <div className="ps-post" key={ind}>
+                            <div className={`ps-post ${ mobileWindow ? " post-shadow":""}`} key={ind} onClick={() => navigate(`/post/${post._id}`, { state: { category: post.category } })}>
                                 <div className="ps-post-left">
                                     <img src={`data:${post.contentType};base64,${post.base64}`} alt={post.name} className='ps-post-img' />
                                 </div>
-                                <div className="ps-post-right" onClick={() => navigate(`/post/${post._id}`, { state: { category: post.category } })}>
+                                <div className="ps-post-right" >
                                     <div className="ps-post-category">{post.category?.toUpperCase()}</div>
                                     <div className="ps-post-topic">{post.topic}</div>
-                                    <div className="ps-post-desc"
-                                        dangerouslySetInnerHTML={{ __html: truncate(post.description, 200) }}></div>
+                                   {!mobileWindow && <div className="ps-post-desc"
+                                        dangerouslySetInnerHTML={{ __html: truncate(post.description, 200) }}></div>}
                                 </div>
                             </div>
                         ))
@@ -100,7 +116,7 @@ export default function Posts() {
                             <img className='icon1' src={business} alt='business' />
                         </div>
                         <div className="cat-name">Business</div>
-                        <div className="cat-desc"> Essential Strategies and Insights for Thriving in Today's Business World</div>
+                        <div className="cat-desc">  Insights for Thriving in Today's Business World</div>
                     </div>
                     <div className="category" onClick={() => navigate(`/blogs/sports`)}>
                         <div className="cat-icon2">

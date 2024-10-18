@@ -86,3 +86,15 @@
     align-items: center;
    }
 }
+@media screen and (max-width:700px) {
+    .f-container{
+        
+    }
+    .subscribe-section{
+        flex-direction: column;
+        width: 350px;
+    }
+    .subscribe-headline{
+        width: 330px;
+    }
+}

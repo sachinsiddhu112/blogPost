@@ -1,21 +1,29 @@
-import React, { useRef } from 'react'
+import React, { useRef ,useEffect, useState} from 'react'
 
 import { CiLinkedin } from "react-icons/ci";
 import { FiGithub } from "react-icons/fi";
 import { FaXTwitter } from "react-icons/fa6";
 import "./Footer.css";
 export default function Footer() {
- 
+  const [mobileWindow, setMobileWindow] = useState(false);
+  useEffect(() => {
+      const handleResize = () => {
+       window.innerWidth < 700 ? setMobileWindow(true) : setMobileWindow(false)
+      }
+      handleResize()
+      window.addEventListener('resize',handleResize)
+      return () => window.removeEventListener('resize',handleResize)
+  },[])
   return (
     <div className='f-container' >
       <div className="title-section">
         <div className="title">BlogPost</div>
-        <div className="menu-section">
+       {!mobileWindow && <div className="menu-section">
           <span>Home</span>
           <span>Blogs</span>
           <span>About Us</span>
           <span>Contact Us</span>
-        </div>
+        </div>}
       </div>
       <div className="subscribe-section">
         <div className="subscribe-headline">

@@ -10,6 +10,15 @@ export default function Contact() {
         alertHeadline:"",
         alertMSG:""
     })
+    const [mobileWindow, setMobileWindow] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+         window.innerWidth < 700 ? setMobileWindow(true) : setMobileWindow(false)
+        }
+        handleResize()
+        window.addEventListener('resize',handleResize)
+        return () => window.removeEventListener('resize',handleResize)
+    },[])
     const handleSubmit = (e) => {
         e.preventDefault();
         setAlert(true)
@@ -28,26 +37,26 @@ export default function Contact() {
     console.log(alert)
     return (
         <div className='contact-container'>
-            <Navbar />
+            <Navbar color = '#232536' />
             <div className="contact-header">
                 <span className='contact-title'>CONTACT US</span>
                 <span className='contact-headline'>Lets Start a Conversation.</span>
                 <span className='contact-desc'>Have any questions or need assistance? Feel free to reach out  </span>
-                <span className="contact-desc">to us! We're here to help with any inquiries or feedback you may have.</span>
+              {!mobileWindow &&  <span className="contact-desc">to us! We're here to help with any inquiries or feedback you may have.</span>}
             </div>
             <div className="contact-info">
                 <div className="ci-left">
-                    <span>Working Hours</span>
+                    <span style={mobileWindow ? {fontSize:'28px'}:{}}>Working Hours</span>
                     <hr style={{width:"100%",transform:"translateY(9px)"}} />
                     <span className="ci-timing">Monday To Friday 9:00 AM To 8:00 PM </span>
-                    <span>Our Support is 24/7 Available.</span>
+                    <span style={mobileWindow ? {fontSize:'28px'}:{}}>Our Support is 24/7 Available.</span>
                 </div>
-                <div className="ci-right">
+               {!mobileWindow && <div className="ci-right">
                     <span>Contact Us</span>
                     <hr style={{width:"100%"}}/>
                     <span className='ci-email'>sachinsiddhu@gmail.com</span>
                     <span>1234567890</span>
-                </div>
+                </div>}
             </div>
             {
                 alert && 

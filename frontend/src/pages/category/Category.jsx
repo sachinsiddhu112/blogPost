@@ -17,6 +17,16 @@ export default function Category() {
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const url = `${process.env.REACT_APP_HOST}/post/allPosts`
+    const [mobileWindow, setMobileWindow] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            window.innerWidth < 700 ? setMobileWindow(true) : setMobileWindow(false)
+        }
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
@@ -36,84 +46,90 @@ export default function Category() {
     console.log(posts);
     return (
         <div className='c-container'>
-            <Navbar />
+            <Navbar color='#232536' />
             {
                 !loading ?
-            <div style={{width:"100%"}}>
-                <div className="header-section">
-                    <div className="header-heading">
-                        {category.toUpperCase()}
-                    </div>
-                    <div className="header-desc">
-                        <div>Welcome to our category page!</div> 
-                        <div>Here, you'll find a curated selection of  tailored content   </div>
-                        <div>  Browse through our collection to discover insightful articles, tips, and resources. </div>
-                    </div>
-                    <div className="header-route">
-                        <span className='item-a'>BLOG</span>
-                        <span className='item-b'>{">"}</span>
-                        <span className='item-a'>{category.toUpperCase()}</span>
-                    </div>
-                </div>
-                <div className="c-content-section">
-                    <div className="category-posts">
-                        {posts.length > 0 ?
-                            posts.map((post, ind) => (
-                                <div className="cat-post" key={ind}>
-                                    <img src={`data:${post.contentType};base64,${post.base64}`} alt={post.name} className='cat-post-img' />
-                                    <div className="post-details">
-                                        <div className="pd-category">{post.category.toUpperCase()}</div>
-                                        <div className="pd-headline" onClick={() => navigate(`/post/${post._id}`)}>{post.topic}</div>
-                                        <div className="pd-desc"
-                                         dangerouslySetInnerHTML={{ __html: truncate(post.description,100) }}></div>
+                    <div style={{
+                        width: "100%", display: "flex", flexDirection: "column",
+                        justifyContent: "center", alignItems: "center"
+                    }}>
+                        <div className="header-section">
+                            <div className="header-heading">
+                                {category.toUpperCase()}
+                            </div>
+                            <div className="header-desc">
+                                <div>Welcome to our category page!</div>
+                                <div>Here, you'll find a curated selection of  tailored content   </div>
+                                <div>  Browse through our collection to discover insightful articles, tips, and resources. </div>
+                            </div>
+                            <div className="header-route">
+                                <span className='item-a'>BLOG</span>
+                                <span className='item-b'>{">"}</span>
+                                <span className='item-a'>{category.toUpperCase()}</span>
+                            </div>
+                        </div>
+                        <div className="c-content-section">
+                            <div className="category-posts">
+                                {posts.length > 0 ?
+                                    posts.map((post, ind) => (
+                                        <div className={`cat-post ${mobileWindow ?
+                                            "post-shadow" : ""}`} key={ind} onClick={() =>
+                                                navigate(`/post/${post._id}`,{state:{category:post.category}})}>
+                                            <img src={`data:${post.contentType};base64,${post.base64}`} alt={post.name} className='cat-post-img' />
+                                            <div className="post-details">
+                                                <div className="pd-category">{post.category.toUpperCase()}</div>
+                                                <div className="pd-headline" >{post.topic}</div>
+                                                <div className="pd-desc"
+                                                    dangerouslySetInnerHTML={{ __html: truncate(post.description, 100) }}></div>
+                                            </div>
+                                        </div>
+                                    ))
+                                    :
+                                    <h2 className="no-post">No Post For This Category.</h2>
+                                }
+                            </div>
+                            <div className="all-categories">
+                                <span className='al-headline'>Categories</span>
+                                <div className='al-item' onClick={() =>
+                                    navigate("/blogs/technology")}>
+                                    <div className='icon-wrapper'>
+                                        <img src={technology} className='al-item-icona' alt="" />
                                     </div>
+                                    <span className="al-item-name" >Technology</span>
                                 </div>
-                            ))
-                            :
-                            <h2 className="no-post">No Post For This Category.</h2>
-                        }
-                    </div>
-                    <div className="all-categories">
-                        <span className='al-headline'>Categories</span>
-                        <div className='al-item'>
-                            <div className='icon-wrapper'>
-                                <img src={technology} className='al-item-icona' alt="" />
+                                <div className='al-item' onClick={() => navigate("/blogs/business")}>
+                                    <div className='icon-wrapper'>
+                                        <img src={business} className='al-item-icona' alt="" />
+                                    </div>
+                                    <span className="al-item-name" >Business</span>
+                                </div>
+                                <div className='al-item' onClick={() => navigate('/blogs/sports')} >
+                                    <div className='icon-wrapper'>
+                                        <img src={sports} className='al-item-iconb' alt="" />
+                                    </div>
+                                    <span className="al-item-name">Sports</span>
+                                </div>
+                                <div className='al-item' onClick={() => navigate("/blogs/lifestyle")}>
+                                    <div className='icon-wrapper'>
+                                        <img src={lifestyle} className='al-item-iconb' alt="" />
+                                    </div>
+                                    <span className="al-item-name">Lifestyle</span>
+                                </div>
                             </div>
-                            <span className="al-item-name" onClick={() => navigate("/blogs/technology")}>Technology</span>
-                        </div>
-                        <div className='al-item' onClick={() => navigate("/blogs/business")}>
-                            <div className='icon-wrapper'>
-                                <img src={business} className='al-item-icona' alt="" />
-                            </div>
-                            <span className="al-item-name" >Business</span>
-                        </div>
-                        <div className='al-item' onClick={() => navigate('/blogs/sports')} >
-                            <div className='icon-wrapper'>
-                                <img src={sports} className='al-item-iconb' alt="" />
-                            </div>
-                            <span className="al-item-name">Sports</span>
-                        </div>
-                        <div className='al-item' onClick={() => navigate("/blogs/lifestyle")}>
-                            <div className='icon-wrapper'>
-                                <img src={lifestyle} className='al-item-iconb' alt="" />
-                            </div>
-                            <span className="al-item-name">Lifestyle</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            : 
-            <BallTriangle
-            height={200}
-            width={100}
-            radius={5}
-            color="#4fa94d"
-            ariaLabel="ball-triangle-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-        />
-        }
+                    :
+                    <BallTriangle
+                        height={200}
+                        width={100}
+                        radius={5}
+                        color="#4fa94d"
+                        ariaLabel="ball-triangle-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                    />
+            }
             <Footer />
         </div>
     )

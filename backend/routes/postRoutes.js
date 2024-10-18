@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { commentOnPost, getAllPosts, getPost, likeOnPost, uploadPost,updatePost, deletePost } from '../controllers/postControllers.js';
+import { commentOnPost, getAllPosts, getPost, likeOnPost, uploadPost,updatePost, deletePost, getAllPostsOfOneAuthor } from '../controllers/postControllers.js';
 import { fetchUser } from '../middleware/fetchUser.js';
 const router = express.Router();
 
@@ -8,6 +8,8 @@ const router = express.Router();
 //posts routes
 //for all posts
 router.get("/allPosts",getAllPosts);
+
+router.get("/authorAllPosts", fetchUser, getAllPostsOfOneAuthor)
 
 //for a specific post.
 router.get("/:id",getPost);

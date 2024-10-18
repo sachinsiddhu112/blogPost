@@ -82,6 +82,7 @@ margin-bottom: 2px;
     width: 100%;
     max-width: 900px;
     margin-top: 50px;
+    text-align: justify;
 
 }
 .next-to-read{
@@ -132,5 +133,23 @@ margin-bottom: 2px;
 @media  screen and (max-width:1025px) {
     .middle-p-img{
         max-width: 800px;
+    }
+}
+
+@media screen and (max-width:700px) {
+    .post-container{
+        margin: 0px;
+    }
+    .bottom-p-desc{
+        font-size: 24px;
+    }
+    .next-posts{
+       overflow: hidden;
+    }
+    .ntr-headline{
+        font-size: 25px;
+    }
+    .np-headline{
+        font-size: 22px;
     }
 }

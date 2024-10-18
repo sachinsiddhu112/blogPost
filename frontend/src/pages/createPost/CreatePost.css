@@ -34,23 +34,32 @@
 }
 .topic-input{
    height: 35px;
-  
    font-size: 15px;
    outline: none;
    padding: 5px 5px;
+   border: none;
    
 }
+
+.topic,.cat{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
 .cat-input{
     display: flex;
     cursor: pointer;
     gap: 10px;
     height: 40px;
     align-items: center;
-   border: 1px solid black;
    font-size: 15px;
    outline: none;
    padding: 5px 5px;
    position: relative;
+ 
    
 }
 .cat-item{
@@ -101,4 +110,19 @@ textarea{
     border:2px solid #f8cb69 ;
     cursor: pointer;
     
+}
+
+@media screen and (max-width:1025px){
+    .inputs{
+        max-width: 700px;
+    }
+    label{
+        font-size: 32px;
+    }
+    .topic-input,.cat-input,.cat-item,.description,.file-input{
+        font-size: 32px;
+    }
+    button{
+        font-size: 28px;
+    }
 }

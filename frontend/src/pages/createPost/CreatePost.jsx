@@ -1,12 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect, useContext } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { motion, transform } from 'framer-motion';
 import JoditEditor from 'jodit-react';
 import "./CreatePost.css"
 import Navbar from '../../components/navbar/Navbar';
+import { editPost, uploadPost } from '../../utils/postUtilFunctions';
+import Alert from '../../components/alert/Alert';
+import {authContext} from '../../context/authContext.js'
 export default function CreatePost() {
     //variables.
+    const { id } = useParams();
     const [file, setFile] = useState(null);
     const [postDescription, setPostDescription] = useState("");
     const [postTopic, setPostTopic] = useState("");
@@ -14,13 +18,21 @@ export default function CreatePost() {
     const [expandCatInput, setExpandCatInput] = useState(false);
     const navigate = useNavigate();
     const editorRef = useRef(null);
-    const [catItemsAnimate, setCatItemsAnimate] = useState({
-        flexDir: "row",
-        left: "20px",
-        top: "0px",
+    const [alert, setAlert] = useState(false);
+    const {user} = useContext(authContext);
+    const [alertContent, setAlertContent] = useState
+        ({
+            alertHeadline: "",
+            alertMSG: ''
+        })
+    const [catItemsAnimate, setCatItemsAnimate] = useState
+        ({
+            flexDir: "row",
+            left: "20px",
+            top: "0px",
 
-    })
-    const url = `${process.env.REACT_APP_HOST}/post`
+        })
+        const queryClient = useQueryClient();
     useEffect(() => {
         window.addEventListener('resize', () => {
             const width = window.innerWidth;
@@ -52,49 +64,57 @@ export default function CreatePost() {
     //function to upload the blog .
     const handleUpload = async () => {
         //input check while uploading the blog.
-        if (!file || !postTopic || !postDescription || !postCategory) {
-            alert("Fill all detials before posting your blog.")
-            return;
-        }
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('description', postDescription);
-        formData.append("topic", postTopic);
-        formData.append('category', postCategory)
-   
-        try {
-            const response = await axios.post(`${url}upload`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'authToken': JSON.parse(sessionStorage.getItem("authToken"))
-                },
-            });
-            alert('file uploaded successfully');
-            navigate("/");
-        }
-        catch (err) {
-            console.log(err);
-            alert(err.response.data.error);
-        }
+        const res = await uploadPost({ file, postTopic, postDescription, postCategory });
+        setAlert(true);
+        setAlertContent({
+           alertHeadline:res.status,
+           alertMSG:res.msg
+        })
+        return res.status;
     }
 
-    console.log(expandCatInput)
-    console.log(postCategory)
+    const handleEditPost = async () => {
+        const res = await editPost({ id, postTopic, postDescription, file, postCategory });
+        setAlert(true);
+        setAlertContent({
+           alertHeadline:res.status,
+           alertMSG:res.msg
+        })
+        return res.status
+    }
+    const handleSubmit = () => {
+        let status;
+        if (id) {
+            status = handleEditPost();
+        }
+        else {
+            status = handleUpload();
+        }
+        //invalidating the cache for fetching new updated data and then cache it.
+        if(status == 'success'){
+            queryClient.invalidateQueries([`user${user}`]);
+            queryClient.invalidateQueries([`allPosts`]);
+            queryClient.invalidateQueries([`featured`]);
+            queryClient.invalidateQueries([`posts`]);
+        }
+    }
+    console.log(id);
+    if(alert) return <Alert setAlert={setAlert} alertContent={alertContent}  />
     return (
         <div className='create-post-section'>
-            <Navbar />
+            <Navbar color='#232536' />
             <div className='inputs'>
                 <div className='topic cp-inputs'>
-                    <label className='t-label'>Topic</label>
+                    <label className='t-label'>Topic:</label>
                     <input type='text' className='topic-input'
                         onChange={(e) => setPostTopic(e.target.value)}
-                        placeholder=' Blog topic' />
+                    />
                 </div>
-                <div className='cat cp-inputs' >
-                    <label className='c-label'>Category</label>
+                <div className='cat cp-inputs' onClick=
+                    {() => setExpandCatInput(!expandCatInput)}>
+                    <label className='c-label' >{postCategory.length != 0 ? postCategory : 'Category:'}</label>
                     <motion.div type='text' className='cat-input'
-                        placeholder=' Blog Category' onClick=
-                        {() => setExpandCatInput(true)}
+                        placeholder=' Blog Category'
 
                         transition={{ type: 'tween', duration: .5 }}
                         style={{ flexDirection: catItemsAnimate.flexDir }}>
@@ -102,33 +122,33 @@ export default function CreatePost() {
                             initial={{ opacity: 0, position: 'relative', }}
                             animate={expandCatInput ?
                                 { opacity: 1, top: catItemsAnimate.top, left: catItemsAnimate.left }
-                                : { }}
+                                : {}}
                             transition={{ type: 'keyframes', duration: .5 }}
-                            className={`cat-item ${postCategory == 'business'?'selected-cat-item':''}`}
+                            className={`cat-item ${postCategory == 'business' ? 'selected-cat-item' : ''}`}
                             onClick={() => {
                                 setPostCategory('business');
                             }}>Business</motion.span>
                         <motion.span
                             initial={{ opacity: 0, position: 'relative', }}
-                            animate={expandCatInput ? { opacity: 1, top: catItemsAnimate.top, left: catItemsAnimate.left } : { }}
+                            animate={expandCatInput ? { opacity: 1, top: catItemsAnimate.top, left: catItemsAnimate.left } : {}}
                             transition={{ type: 'tween', duration: .5 }}
-                            className={`cat-item ${postCategory == 'technology'?'selected-cat-item':''}`}
+                            className={`cat-item ${postCategory == 'technology' ? 'selected-cat-item' : ''}`}
                             onClick={() => {
                                 setPostCategory('technology');
                             }}>Technology</motion.span>
                         <motion.span
                             initial={{ opacity: 0, position: 'relative', }}
-                            animate={expandCatInput ? { opacity: 1, top: catItemsAnimate.top, left: catItemsAnimate.left } : { }}
+                            animate={expandCatInput ? { opacity: 1, top: catItemsAnimate.top, left: catItemsAnimate.left } : {}}
                             transition={{ type: 'tween', duration: .5 }}
-                            className={`cat-item ${postCategory == 'lifecycle'?'selected-cat-item':''}`}
+                            className={`cat-item ${postCategory == 'lifecycle' ? 'selected-cat-item' : ''}`}
                             onClick={() => {
                                 setPostCategory('lifecycle');
                             }}>Lifestyle</motion.span>
                         <motion.span
                             initial={{ opacity: 0, position: 'relative', }}
-                            animate={expandCatInput ? { opacity: 1, top: catItemsAnimate.top, left: catItemsAnimate.left } : { }}
+                            animate={expandCatInput ? { opacity: 1, top: catItemsAnimate.top, left: catItemsAnimate.left } : {}}
                             transition={{ type: 'spring', duration: .5 }}
-                            className={`cat-item ${postCategory == 'sports'?'selected-cat-item':''}`}
+                            className={`cat-item ${postCategory == 'sports' ? 'selected-cat-item' : ''}`}
                             onClick={() => {
                                 setPostCategory('sports');
                             }}>Sports</motion.span>
@@ -144,6 +164,7 @@ export default function CreatePost() {
                         onBlur={newDescription => setPostDescription(newDescription)}
                         onChange={newDescription => { }}
                         className='description'
+                        style={{ transform: 'scale(1.4)' }}
                     />
                 </div>
                 <div className='file cp-inputs'>
@@ -152,7 +173,7 @@ export default function CreatePost() {
                     </input>
                 </div>
                 <div className='btn-container'>
-                    <button onClick={handleUpload} className='upload-btn'>Post</button>
+                    <button onClick={handleSubmit} className='upload-btn'>Post</button>
                     <button onClick={() => navigate("/")} className='cancel-btn'>Cancel</button>
                 </div>
 

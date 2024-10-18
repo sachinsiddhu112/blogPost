@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useScroll } from 'framer-motion';
 import React, { useEffect, useState, useCallback } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { BallTriangle } from 'react-loader-spinner';
@@ -34,6 +33,7 @@ export default function Post() {
   const fetchAllfiles = useCallback(async () => {
     setLoading(true);
     try {
+      console.log(postId)
       const response = await axios.get(`${url}/${postId}`);
       const response2 = await axios.get(`${url}/allPosts?limit=4&&category=${category}&&id=${postId}`)
       setPost(response.data)
@@ -62,13 +62,13 @@ export default function Post() {
     }
   },[postId])
   useEffect(() => {
+    
     fetchAllfiles();
+    console.log(postId)
   }, [postId])
-  console.log(postsNextToRead)
-  console.log(category)
   return (
     <div className='container'>
-      <Navbar />
+      <Navbar color = '#232536' />
       {loading ?
         <div className="loader">
           <BallTriangle
@@ -114,9 +114,9 @@ export default function Post() {
             <div className="next-posts">
               {postsNextToRead.length > 0 ?
                 postsNextToRead.map((post, ind) => (
-                  <div className="n-post" key={ind}>
+                  <div className="n-post" key={ind} onClick={() => setPostId(post._id)}>
                     <img src={`data:${post.contentType};base64,${post.base64}`} alt={post.name} className='np-img' />
-                    <div className="np-headline" onClick={() => setPostId(post._id)}>
+                    <div className="np-headline" >
                       {post.topic}:
                     </div>
                   </div>

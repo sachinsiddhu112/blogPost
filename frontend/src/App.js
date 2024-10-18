@@ -13,6 +13,7 @@ import Posts from "./pages/posts/Posts.jsx";
 import Category from "./pages/category/Category.jsx";
 import Contact from "./pages/contact/Contact.jsx";
 import Alert from "./components/alert/Alert.jsx";
+import AuthorProfile from "./pages/authorProfile/AuthorProfile.jsx"
 
 function App() {
   const queryClient = new QueryClient();
@@ -27,7 +28,9 @@ function App() {
           <Route path="/blogs/:category" element = {<Category/>} />
           <Route path="/post/:id" element={<Post />} />
           <Route path="/contact" element = {<Contact/>} />
+          <Route path = "/user-posts" element = {<AuthorProfile/>} />
           <Route path="/createPost" element={<CreatePost />} />
+          <Route path = '/updatePost/:id' element = {<CreatePost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/alert" element = {<Alert/>} />

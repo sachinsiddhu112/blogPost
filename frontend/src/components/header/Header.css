@@ -23,6 +23,7 @@
     z-index: -1;
     background-image: url("../../assets/header-back.png");
     background-repeat: no-repeat;
+    background-size: cover;
 }
 .heading {
     position: relative;
@@ -56,4 +57,14 @@
     .header-back{
         height: 800px;
     }
+}
+@media screen and (max-width:700px) {
+ .h-container{
+   min-height: 100vh;
+   max-width: 500px;
+ }
+ .header-back{
+    height: 100vh;
+ }
+  
 }
