@@ -155,7 +155,7 @@ export default function Posts() {
             <div className="categories">
                 <h2 className='cat-heading'>All Categories</h2>
                 {!mobileWindow ?
-                    <div className="posts.all-cat">
+                    <div className="posts-all-cat">
                         {
                             categories.map((category, i) => (
                                 <div className="category" key={i}

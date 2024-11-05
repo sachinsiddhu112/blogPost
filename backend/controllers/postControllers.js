@@ -118,7 +118,9 @@ export const getAllPostsOfOneAuthor = async (req, res) => {
       contentType: post.file.contentType != null ? post.file.contentType : null,
       base64: post.file.data != null ? Buffer.from(post.file.data).toString('base64') : null,
     }));
-    client.set(`posts:${user.username}:${status}`, JSON.stringify(list));
+    client.set(`posts:${user.username}:${status}`, JSON.stringify(list), "EX", 60)
+    .then(reply => console.log("Set key reply:", reply)) // Should log "OK" if successful
+    .catch(err => console.error("Error setting key:", err));
     res.status(200).json(list);
   }
   catch (error) {
