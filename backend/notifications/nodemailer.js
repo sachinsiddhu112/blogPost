@@ -1,16 +1,18 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config()
-console.log(JSON.stringify(process.env.APP_PASS))
-const password = JSON.stringify(process.env.APP_PASS)
+
+const PASSWORD = JSON.stringify(process.env.APP_PASS);
+const USER = JSON.stringify(process.env.NOTIFICATION_USER);
+const HOST = JSON.stringify(process.env.NOTIFICATION_HOST);
 const transporter = nodemailer.createTransport
     ({
-        host: 'smtp.gmail.com',
+        host: HOST,
         port: 465,
         auth:
         {
-            user: 'sachinsiddhu112@gmail.com',
-            pass: "mofsveerkfkwabgd"
+            user: USER,
+            pass: PASSWORD
         }
     })
 export const sendMail = (to, sub, msg) => {
