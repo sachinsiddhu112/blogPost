@@ -10,6 +10,7 @@ import "./Category.css";
 import Navbar from '../../components/navbar/Navbar';
 import { useNavigate, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/Footer';
+import { useWindowWidth } from '../../hooks/windowWidth';
 export default function Category() {
     const { category } = useParams();
 
@@ -17,27 +18,22 @@ export default function Category() {
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const url = `${process.env.REACT_APP_HOST}/post/allPosts`
-    const [mobileWindow, setMobileWindow] = useState(false);
-    useEffect(() => {
-        const handleResize = () => {
-            window.innerWidth < 700 ? setMobileWindow(true) : setMobileWindow(false)
-        }
-        handleResize()
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [])
+    const { mobileWindow } = useWindowWidth(); 
+    
 
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${url}?category=${category}`);
+                const response = await axios.get(`${url}?category=${category}&&status=public`);
                 setPosts(response.data);
             }
-            catch (err) {
-                alert(err)
+            catch (err) 
+            {
+               alert("server side error.")
             }
-            finally {
+            finally 
+            {
                 setLoading(false);
             }
         }

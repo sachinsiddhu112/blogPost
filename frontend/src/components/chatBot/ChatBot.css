@@ -1,0 +1,28 @@
+
+.chat-bot{
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: flex-end;
+}
+.bpContainer{
+    background-color: black;
+    height: 400px;
+    width: 300px;
+    box-shadow:0px 0px 5px rgb(177, 175, 175) ;
+    
+}
+.bpFabContainer{
+   
+    
+}
+.bpFabContainer{
+    box-shadow: 0px 0px 5px rgb(177, 175, 175);
+}
+@media screen and (max-width:700px) {
+    .bpContainer{
+
+    }
+}

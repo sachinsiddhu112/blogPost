@@ -140,6 +140,14 @@
         padding: 0px 0px;
     }
 }
+@media  screen and (max-width:860px) {
+    .all-cat{
+        display: grid;
+        grid-template-columns: 27% 27% ;
+        gap: 25px;
+      
+    }
+}
 
 @media screen and (max-width:700px) {
     .header-section{

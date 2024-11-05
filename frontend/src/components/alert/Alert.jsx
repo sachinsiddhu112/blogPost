@@ -1,17 +1,30 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiCheck } from "react-icons/bi";
-
+import {motion, useScroll} from 'framer-motion'
 import "./Alert.css"
-export default function Alert({setAlert, alertContent}) {
+export default function Alert({ setAlert, alertContent}) {
+    const [mobileWindow, setMobileWindow] = useState(false);
+    const [alertInitialPos , setAlertInitilaPos] = useState(0);
+    const [finalPos , setFinalPos] = useState(0)
     useEffect(() => {
-       const timeOut = setTimeout(setAlert(false),2000);
-       return ()=> clearTimeout(timeOut);
-    },[])
+        const handleResize = () => {
+         window.innerWidth < 700 ? setMobileWindow(true) : setMobileWindow(false)
+        }
+        handleResize()
+        window.addEventListener('resize',handleResize)
+        return () => window.removeEventListener('resize',handleResize)
+    },[window.innerWidth])
+    
     return (
-        <div className='alert-container'>
+        <motion.div 
+        initial = {{x:0,y:alertInitialPos, opacity: 1}}
+        animate = {{x:finalPos, opacity: 1}}
+       
+        transition={{duration:2,type:'tween'}}
+        className={`alert-container`}>
             <span className='close-alert' onClick={() => setAlert(false)}>x</span>
             <div className="alert-content">
-                <div className='alert-icon'>
+                <div className='alert-icon' style={alertContent.alertHeadline == 'Error'?{backgroundColor:'red'}:{backgroundColor:'green'}}>
                     <BiCheck />
                 </div>
                 <div>
@@ -19,6 +32,6 @@ export default function Alert({setAlert, alertContent}) {
                  <div className='alert-msg'>{alertContent?.alertMSG}</div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }

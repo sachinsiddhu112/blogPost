@@ -22,8 +22,14 @@ const postSchema = new mongoose.Schema({
         default:"false"
     },
     file: {
-      data: Buffer,
-      contentType: String
+        data: {
+            type: Buffer,
+            default: null,
+          },
+          contentType: {
+            type: String,
+            default: null,
+          },
     },
     comments:{
         type:[String],
@@ -32,6 +38,10 @@ const postSchema = new mongoose.Schema({
     likes:{
         type:[String],
         default:[]
+    },
+    status:{
+        type: String,
+        default: 'upcoming'
     },
     date:{
         type:Date,

@@ -12,10 +12,10 @@ export const AuthProvider = ({ children }) => {
     const [authToken,setAuthToken] = useState(
         sessionStorage.getItem('authToken')? JSON.parse(sessionStorage.getItem("authToken")):""
     )
-    return <authContext.Provider value={{
+    return <authContext.Provider value=
+    {{
         user,setUser,authToken,setAuthToken
     }}>
-
         {children}
     </authContext.Provider>
 }

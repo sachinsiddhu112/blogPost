@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 
 import postRoutes from "./routes/postRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
-
+import subscribersRoutes from './routes/subscriberRoutes.js';
 dotenv.config();
 const app = express();
 app.use(bodyParser.json());
@@ -29,6 +29,8 @@ const upload = multer({ storage: storage });
 app.use("/auth", authRoutes)
 //endpoint  post handling.
 app.use("/post", upload.single("file"), postRoutes);
+//subscriber endpoint.
+app.use('/subscriber',subscribersRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT}`);

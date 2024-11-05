@@ -5,16 +5,22 @@
     align-items: center;
     width: 100%;
   
-    transform: translateY(100px);
+    
     color: white;
     margin-top: 80px;
     padding: 20px 0px;
     gap: 20px;
-    margin: auto;
+   
     background-color: #232536;
     position: relative;
 }
-
+.f-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
 .title-section{
     display: flex;
     width: 85%;
@@ -23,7 +29,8 @@
 .menu-section{
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 55px;
+    align-items: center;
 }
 .subscribe-section{
     display: flex;
@@ -35,6 +42,7 @@
     height: fit-content;
     padding: 60px 50px;
     border-radius: 10px;
+    position: sticky;
 }
 .subscribe-headline{
     font-size: 25px;
@@ -58,6 +66,10 @@
     height: 40px;
     background-color:#FFD050 ;
     border: none;
+    cursor: pointer;
+}
+.si-btn:hover{
+    transform: scale(1.06);
 }
 .social-media-section{
     display: flex;
@@ -68,10 +80,13 @@
     display: flex;
     gap: 20px;
 }
-
+.f-title{
+    margin: 0;
+    font-size: 24px;
+}
 @media screen and (max-width:1025px) {
     .f-container{
-        padding: 20px 0px;
+        padding: 20px 10px;
     }
    .subscribe-section{
     justify-content: center;
@@ -90,11 +105,22 @@
     .f-container{
         
     }
+    .f-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        gap: 10px;
+    }
     .subscribe-section{
         flex-direction: column;
         width: 350px;
+        justify-content: center;
+        align-items: center;
     }
     .subscribe-headline{
         width: 330px;
     }
+    
 }

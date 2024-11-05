@@ -1,5 +1,4 @@
-
-.create-post-section{
+.create-post-section {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -8,7 +7,7 @@
     height: 100%;
 }
 
-.inputs{
+.inputs {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,110 +18,186 @@
     height: fit-content;
     margin-top: 20px;
     padding: 10px 10px;
-  
+
 }
-.inputs label{
+
+.inputs label {
     margin-left: 10px;
+    font-size: 20px;
+    
 }
-.cp-inputs{
+
+.cp-inputs {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    width:100%;
+    gap: 10px;
+    width: 100%;
+    height: 50px;
 
-   
-}
-.topic-input{
-   height: 35px;
-   font-size: 15px;
-   outline: none;
-   padding: 5px 5px;
-   border: none;
-   
 }
 
-.topic,.cat{
+.topic-input {
+    height: 35px;
+    font-size: 15px;
+    outline: none;
+    padding: 5px 5px;
+    border: none;
+    width: 100%;
+
+}
+
+.topic,
+.cat,.status {
     display: flex;
     flex-direction: row;
     align-items: center;
     border: 1px solid black;
     border-radius: 10px;
+
+    gap: 10px;
+    padding: 10px 0px;
 }
 
-.cat-input{
+.cat-input {
     display: flex;
     cursor: pointer;
     gap: 10px;
     height: 40px;
     align-items: center;
-   font-size: 15px;
-   outline: none;
-   padding: 5px 5px;
-   position: relative;
- 
-   
+    font-size: 15px;
+    outline: none;
+    padding: 5px 5px;
+    position: relative;
+
+
 }
-.cat-item{
+
+.cat-item {
     width: fit-content;
     height: fit-content;
     padding: 8px 8px;
     border-radius: 10px;
-    box-shadow:inset 0px 0px  4px rgb(136, 136, 136);
+    box-shadow:  0px 0px 4px rgb(136, 136, 136);
     cursor: pointer;
 }
-.cat-item:hover{
-    scale:1.1;
+
+.cat-item:hover {
+    scale: 1.1;
 }
-.selected-cat-item{
-    border: 1px solid skyblue;
-    box-shadow: inset 0px 0px  5px skyblue;
+
+.selected-item {
+    border: 1px solid orange;
+    box-shadow:  0px 0px 5px rgb(242, 187, 86);
 }
-.description{
-    height:fit-content;
+
+.description {
+    height: fit-content;
     border-radius: 10px;
-   font-size: 15px;
-   outline: none;
-   padding: 5px 5px;
-   
+    font-size: 15px;
+    outline: none;
+    padding: 5px 5px;
+
 }
-textarea{
+
+textarea {
     height: 400px;
 }
-.btn-container{
+
+
+.class1 {
+    padding: 5px 5px;
+    height: 50px;
+    border: none;
+
+}
+.f-label{
+    padding: 5px 5px;
+    border-radius: 10px;
+    background-color:gray;
+    width: 250px;
+    color: white;
+}
+.file-input {
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color:gray;
+    color: white;
+    border-radius: 4px;
+    position: absolute;
+    opacity: 0;
+    
+  }
+.btn-container {
     display: flex;
     gap: 10px;
+    margin-top: 50px;
 }
-.upload-btn{
+
+.upload-btn {
     width: 200px;
     padding: 5px 5px;
     height: 40px;
-    background-color:black;
+    background-color: black;
     border: none;
     cursor: pointer;
     color: white;
-    
+
 }
 
-.cancel-btn{
+.cancel-btn {
     width: 200px;
     padding: 5px 5px;
     height: 40px;
-    border:2px solid #f8cb69 ;
+    border: 2px solid #f8cb69;
+    cursor: pointer;
+
+}
+
+.status-item{
+    box-shadow: 0px 0px 4px rgb(136,136,136);
+    border-radius: 10px;
+    padding: 5px 5px;
     cursor: pointer;
     
 }
-
-@media screen and (max-width:1025px){
-    .inputs{
+@media screen and (max-width:1025px) {
+    .inputs {
         max-width: 700px;
     }
-    label{
-        font-size: 32px;
+
+    .cp-inputs label {
+        font-size: 24px;
     }
-    .topic-input,.cat-input,.cat-item,.description,.file-input{
-        font-size: 32px;
+
+    .topic-input,
+    .cat-input,
+    .cat-item,
+    .description,
+    .file-input {
+        font-size: 24px;
     }
-    button{
+
+    button {
         font-size: 28px;
+    }
+    .status-item{
+        font-size: 24px;
+    }
+    .cat, .topic,.status{
+        height: 60px;
+    }
+}
+
+@media screen and (max-width:700px) {
+    .cat{
+        height: fit-content;
+    }
+    .cat-input{
+        height: fit-content;
+        flex-wrap: wrap;
+    }
+    .btn-container{
+        flex-direction: column;
     }
 }

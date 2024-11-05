@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-   
+    z-index: 9;
     align-content: center;
     flex-wrap: wrap;
     max-width: 600px;
@@ -52,7 +52,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-   
+    z-index: 9;
     margin-top: 0px;
 }
 .single-post{
@@ -78,7 +78,7 @@ cursor: pointer;
 }
 .about-us-section{
     width: 100%;
-    max-width: 95vw;
+    max-width: 1100px;
     padding: 10px 10px;
     margin: auto;
     margin-top: 50px;
@@ -103,7 +103,7 @@ cursor: pointer;
     flex-direction: row;
     gap: 15px;
     width: 100%;
-    max-width: 900px;
+    max-width: 1100px;
     background-color: #F4F0F8;
     margin: auto;
     padding: 50px 90px;
@@ -143,11 +143,12 @@ cursor: pointer;
 }
 .categories{
     width: 100%;
+    max-width: 1100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
+    gap: 20px;
     
 }
 .all-cat{
@@ -159,18 +160,22 @@ cursor: pointer;
     grid-template-columns: 250px 250px 250px 250px;
     margin: auto;
 }
+.cat-heading{
+    font-size: 22px;
+}
 .category{
     width: 200px;
-    height: 150px;
+    min-height: 180px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border:1px solid black;
     padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px #96632d;
 }
 .category:hover{
-    background-color: #FFD050;
-    border: none;
+    transform: scale(1.1);
 }
 .cat-icon1{
     width: fit-content;
@@ -221,7 +226,7 @@ cursor: pointer;
     display: flex;
     flex-direction: row;
     width: 100%;
-    max-width: 95vw;
+    max-width: 1100px;
     margin-top: 80px;
     justify-content: center;
     align-items: center;
@@ -245,7 +250,7 @@ cursor: pointer;
     width: 100%;
     max-width: 500px;
     height: 460px;
-    z-index: 10;
+    z-index: 2;
     gap: 20px;
     position: relative;
     left: -50px;
@@ -292,24 +297,38 @@ cursor: pointer;
         padding: 10px 10px;
     }
     .all-cat{
-        grid-template-columns: 23% 23% 23% 23%;
-        margin-left: 2vw;
+        grid-template-columns: 21% 21% 21% 21%;
+      
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
     }
     .category{
-        width: 80%;
+        width: 100%;
     }
     .story-bg{
-        width: 65%;
+       
     }
-    .story-img{
-        width: 65vw;
+    .story-image{
+        width: 600px;
+        height: 400px;
     }
     .story-details{
         top: 60px;
         left: -50px;
+        width: 70%;
+        height: 70%;
     }
     .story-desc{
         width: 330px;
+    }
+}
+@media  screen and (max-width:860px) {
+    .all-cat{
+        display: grid;
+        grid-template-columns: 27% 27% ;
+        gap: 25px;
+      
     }
 }
 
@@ -323,8 +342,39 @@ cursor: pointer;
         justify-content: center;
         align-items: center;
     }
+
     .all-posts{
         font-size: 20px;
+    }
+    .mb-post-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .single-post{
+        box-shadow: 0px 0px 8px ;
+        height: 190px;
+    }
+    .dot-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        height: fit-content;
+        width: fit-content;
+    }
+    
+    .dot{
+        width: 7px;
+        height: 7px;
+        background-color: rgb(88, 88, 154);
+        border-radius: 5px;
+    }
+    .selectedPost{
+        background-color: blue;
     }
     .sp-post-headline{
         font-size: 24px;
@@ -361,8 +411,13 @@ cursor: pointer;
         font-size: 24px;
     }
    .all-cat{
-    grid-template-columns: 45% 45%;
-    justify-content: center;
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 350px;
+   justify-content: center;
+   align-items: center;
+   margin: 0;
    }
    .all-cat .category{
     height: 210px;
@@ -370,6 +425,19 @@ cursor: pointer;
    .cat-desc, .cat-name{
     font-size: 20px;
     
+   }
+   .toggleBtns{
+    display: flex;
+    gap: 15px;
+   }
+   .cat-np-btn{
+   width: fit-content;
+   height: fit-content;
+   background-color: #FFD050;
+   box-shadow: 0px 0px 4px ;
+   border-radius: 10px;
+   padding: 15px 15px;
+   z-index: 2;
    }
    .story-bg{
     left: 0px;
@@ -382,7 +450,10 @@ cursor: pointer;
    .story-details{
     position: relative;
     inset: 0px;
-    width: 300px;
+    width: 100%;
+    max-width: 550px;
+    background-color: transparent;
+    padding: 10px 10px;
 }
 .st-heading{
     margin-top: 10px;
@@ -392,6 +463,10 @@ cursor: pointer;
     font-size: 32px;
 }
 .story-desc{
+    width: 100%;
+    max-width: 530px;
     font-size: 24px;
+    text-align:justify;
+    
 }
 }

@@ -1,5 +1,6 @@
 .login {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -11,38 +12,77 @@
 
 .l-container {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 500px;
+    max-width: 700px;
+    background-color: white;
+}
+.lc-left{
+width: 100%;
+height: inherit;
+}
+.lc-left-img{
+    height: inherit;
+    width: 500px;
+    
+}
+.lc-heading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.lc-heading-1{
+    font-size: 30px;
+    font-weight: 700;
+    z-index: 99;
+    padding: 0;
+}
+.lc-heading-2{
+    font-size: 28px;
+    font-weight: 700;
+    padding: 0;
+    color: rgb(21, 20, 20);
+}
+.lc-right{
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 10px 10px;
-    width: 100%;
-    position: relative;
-    max-width: 600px;
-    background-color: #e5e5e5;
-    box-shadow: 2px 2px 2px #adb5bd ;
+    width: fit-content;
+    
     border-radius: 10px;
     z-index: 1;
-    
+    gap: 5px;
 }
-.l-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: whitesmoke;
-    opacity: 0.2; 
-    z-index: -9; 
-    border-radius: 10px;
-  }
+.l-header{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
 
+.l-logo{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 2px 2px rgb(174, 174, 174);
+}
+.l-heading{
+    font-size: 34px;
+    font-weight: 700;
+}
 .input-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     width: 100%;
    
 }
@@ -53,30 +93,86 @@
     gap: 5px;
     width: 100%;
     max-width: 300px;
+    border-radius: 25px;
+    border: 1px solid black;
+    padding: 10px 10px;
 }
 
-.input {
+.input{
     width: 100%;
     max-width: 300px;
     height: 20px;
     padding: 8px 3px;
     font-size: 16px;
-    border-radius: 10px;
+    outline: none;
 }
 
 .l-btn {
-    height: 30px;
-    width: 200px;
-    border: 2px solid #ff7d00;
-    border-radius: 10px;
+    height: 40px;
+    width: 250px;
+    border: none;
+    border-radius: 20px;
     cursor: pointer;
     margin: auto;
+    color: white;
+    background-color: black;
 }
 
 .l-btn:hover {
-    background-color: #ff7d00;
-    border: 2px solid white;
+    background-color: rgb(34, 33, 33);
+    
 }
 .to-signup{
     color: rgb(0, 119, 255);
+}
+
+.login-with-gg{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.login-with-github{
+    width: 100%;
+    max-width: 250px;
+    height: 40px;
+    padding: 10px 10px;
+    border: 1px solid black;
+    border-radius: 25px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.login-with-google{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 250px;
+    height: 40px;
+    padding: 10px 10px;
+    border: 1px solid black;
+    border-radius: 25px;
+    cursor: pointer;
+}
+.login-with-google:hover{
+    background-color:#d7d9ce ;
+   }
+.login-with-github:hover{
+    background-color:#d7d9ce ;
+}
+.social-login{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+}
+.social-icons{
+    width: 25px;
+    height: 25px;
 }

@@ -1,16 +1,19 @@
 .body{
-    background-color: #212529;
+    background-color: #edede9;
     overflow: hidden;
 }
 
 .custom{
     display: flex;
     justify-content: center;
-    align-items: center;
+  
     font-family: sans-serif;
     width:100%;
     max-width:2400px;
-    
+    background: #f5ebe0;
+    min-height: 100vh;
+    z-index: -2;
+    overflow: hidden;
    
 }
 

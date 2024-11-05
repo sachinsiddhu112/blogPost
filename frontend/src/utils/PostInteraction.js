@@ -36,3 +36,5 @@ export const commentPost = async ({comment,id}) => {
       alert(error.response.data.error);
     }
   }
+
+

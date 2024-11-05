@@ -60,16 +60,50 @@ width: 100%;
     justify-content: center;
     align-items: center;
     padding: 5px 5px;
+    gap: 20px;
+}
+.post-status{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+   
+}
+.post-status-highlight{
+    padding: 2px 10px;
+    background-color: rgb(247, 192, 89);
+    box-shadow: 0px 0px 5px rgb(144, 106, 36);
+}
+.ps-up-posts{
+    width: 100%;
+    display: flex;
+
 }
 .ps-posts{
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 100%;
+    max-width: 900px;
     margin-top: 20px;
     color: black;
     
 }
+
+
+.upcoming-posts{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+    color: black;
+  
+}
+
 .ps-post{
     display: flex;
     gap: 20px;
@@ -93,18 +127,40 @@ width: 100%;
 .ps-post-right{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     width: 100%;
     max-width: 500px;
 }
 .ps-post-category{
     color: #592EA9;
-    
+    width: fit-content;
+    padding: 5px 5px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2px gray;
+    background-color: rgb(232, 232, 232);
 }
 .ps-post-topic{
     font-size: 20px;
     font-weight: 760;
     cursor: pointer;
+}
+.uuc-single-post{
+   
+    width: 100%;
+    max-width: 700px;
+    padding: 5px 5px;
+    border-radius: 10px;
+   
+}
+.uuc-single-post:hover{
+ background-color: bisque;
+ transform:scale(1.05)
+ 
+}
+.uuc-post-headline{
+    font-weight: 600;
+    font-size: 20px;
+    width: 100%;
 }
 
 .categories{
@@ -113,30 +169,35 @@ width: 100%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
+    margin-top: 60px;
     
 }
-.all-cat{
+.cat-heading{
+    font-size: 24px;
+}
+.posts-all-cat{
     gap: 15px;
     width: 100%;
     max-width: 1000px;
     display: grid;
     grid-template-columns: 250px 250px 250px 250px;
-    margin: auto;
+    margin-top: 50px;
+    justify-content: center;
+    align-items: center;
 }
 .category{
     width: 200px;
-    height: 150px;
+    height: 180px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border:1px solid black;
     padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px #96632d;
     cursor: pointer;
 }
 .category:hover{
-    background-color: #FFD050;
-    border: none;
+    transform: scale(1.1);
 }
 .cat-icon1{
     width: fit-content;
@@ -193,7 +254,19 @@ width: 100%;
     .ps-post-img{
         width: 400px;
     }
+    .posts-all-cat{
+        gap: 10px;
+        grid-template-columns: 210px 210px 210px 210px;
+    }
 }
+@media  screen and (max-width:860px) {
+    .posts-all-cat{
+        grid-template-columns: 27% 27% ;
+        gap: 25px;
+      
+    }
+}
+
 
 
 @media screen and (max-width:700px) {
@@ -237,10 +310,18 @@ width: 100%;
         width: 360px;
         margin: auto;
     }
-    .all-cat{
-        grid-template-columns: 45% 45%;
+    .posts-all-cat{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
         justify-content: center;
+        align-items: center;
+        margin-top: 20px;
         
+    }
+    .category{
+        height: 220px;
+        width: 350px;
     }
     .cat-name{
         font-size: 24px;
@@ -248,10 +329,21 @@ width: 100%;
     .cat-desc{
         font-size: 20px;
     }
-    .category{
-        width: 150px;
-        
-    }
+   
+    
+   .toggleBtns{
+    display: flex;
+    gap: 15px;
+   }
+   .cat-np-btn{
+    width: fit-content;
+    height: fit-content;
+    background-color: #FFD050;
+    box-shadow: 0px 0px 4px ;
+    border-radius: 10px;
+    padding: 15px 15px;
+    z-index: 2;
+   }
     .post-shadow{
         width: fit-content;
         padding: 10px 10px;

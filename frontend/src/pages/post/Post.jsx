@@ -29,13 +29,15 @@ export default function Post() {
     contentType: "image",
     base64: "",
   })
+  console.log(postId)
   const url = `${process.env.REACT_APP_HOST}/post`
   const fetchAllfiles = useCallback(async () => {
     setLoading(true);
     try {
-      console.log(postId)
+      
       const response = await axios.get(`${url}/${postId}`);
       const response2 = await axios.get(`${url}/allPosts?limit=4&&category=${category}&&id=${postId}`)
+      console.log("rs2",response2)
       setPost(response.data)
       setPostsNextToRead(response2.data);
       switch (response.data.category) {
@@ -64,8 +66,10 @@ export default function Post() {
   useEffect(() => {
     
     fetchAllfiles();
-    console.log(postId)
+    
   }, [postId])
+ 
+  console.log('next',category)
   return (
     <div className='container'>
       <Navbar color = '#232536' />
@@ -90,8 +94,7 @@ export default function Post() {
                 <div className="name">
                   {post.user}
                 </div>
-                <div className="date">{post?.date?.toLocaleDateString('en-US', options) ||
-                  new Date().toLocaleDateString('en-US', options)}</div>
+                <div className="date">{new Date(post.date).toLocaleDateString('en-US', options) }</div>
               </div>
             </div>
             <div className="post-headline">
