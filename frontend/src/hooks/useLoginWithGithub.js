@@ -11,6 +11,7 @@ const { setUser, setAuthToken } = useContext(authContext)
 useEffect( () => {
     const userDetails =  async() => {
         const queryParams = new URLSearchParams(window.location.search);
+        console.log("queryParams", queryParams)
         const paramValue = queryParams.get('code');
         if (paramValue && sessionStorage.getItem('authToken') == null) {
             const { user, authToken } = await fetchUserDetailsFromGithub(paramValue);

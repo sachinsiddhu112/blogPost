@@ -6,6 +6,7 @@
     width: 100%;
     overflow: hidden;
     padding: 0px 10px;
+    margin: auto;
 }
 .loader{
     width: 100%;
