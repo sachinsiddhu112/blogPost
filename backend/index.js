@@ -8,7 +8,10 @@ import dotenv from 'dotenv';
 import postRoutes from "./routes/postRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 import subscribersRoutes from './routes/subscriberRoutes.js';
+import client from './caching/redis.js';
+
 dotenv.config();
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
@@ -22,9 +25,11 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 }).catch(err => {
   console.log('Failed to connect to MongoDB', err);
 });
+
 //configure multer to handle files
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
 //endpoint for user authorization and authentication.
 app.use("/auth", authRoutes)
 //endpoint  post handling.

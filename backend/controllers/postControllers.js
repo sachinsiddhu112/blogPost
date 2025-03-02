@@ -48,6 +48,7 @@ export const getAllPosts = async (req, res) => {
       //no categroy means ,request for all posts.
       //all posts from cache.
       const cachedPosts = await client.get(`posts:${status}`);
+      console.log('hit the cached', cachedPosts);
       if (cachedPosts != null) {//for cache hit.
         const parsePosts = await JSON.parse(cachedPosts);
         //for limited posts.
