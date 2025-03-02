@@ -176,9 +176,10 @@ export const loginWithGoogle = async (req, res) => {
 
   try{
    const { code } = req.query;
-   console.log(code);
+   console.log('code', code);
    const googleRes = await oauth2client.getToken(code);
    const ab = oauth2client.setCredentials(googleRes.tokens);
+   console.log('ab', ab)
    const userDetails = await fetch("https://openidconnect.googleapis.com/v1/userinfo?alt=json&access_token=" + googleRes.tokens.access_token)
    const { name, email,sub } = await userDetails.json();
    const existingUser = await User.findOne({username:name+ sub.substring(0,5)});
